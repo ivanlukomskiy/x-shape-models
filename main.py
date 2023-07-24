@@ -3,6 +3,7 @@ import math
 import numpy as np
 from stl import mesh
 
+filename='net.stl'
 width = 2
 height = 3
 line = 0.42
@@ -290,4 +291,4 @@ net_copies = array(x, [width, height, 0], v_cells, h_cells, 1)
 
 res = combine_meshes(x, frame(), *net_copies)
 
-res.save('leg.stl')
+res.save(filename)
