@@ -11,15 +11,20 @@ def x_shape(
         truncation_angle_2,
         contact_fraction_h,
         contact_fraction_v,
+        bottom_cap=False,
+        top_cap=False,
 ):
-    mesh1 = _x_shape_quarter(l, d, h, truncation_angle_1, contact_fraction_h, contact_fraction_v)
-    mesh2 = _x_shape_quarter(l, d, -h, truncation_angle_1, contact_fraction_h, contact_fraction_v)
-    mesh2.translate(np.array([0, 0, h * 2]))
-    mesh3 = _x_shape_quarter(-l, d, h, truncation_angle_2, contact_fraction_h, contact_fraction_v)
-    mesh4 = _x_shape_quarter(-l, d, -h, truncation_angle_2, contact_fraction_h, contact_fraction_v)
-    mesh4.translate(np.array([0, 0, h * 2]))
+    mesh1 = _x_shape_quarter(l / 2, d, h/2 , truncation_angle_1, contact_fraction_h, contact_fraction_v, bottom_cap=bottom_cap)
+    mesh2 = _x_shape_quarter(l / 2, d, -h/2, truncation_angle_1, contact_fraction_h, contact_fraction_v, bottom_cap=top_cap)
+    mesh2.translate(np.array([0, 0, h]))
+    mesh3 = _x_shape_quarter(-l / 2, d, h/2, truncation_angle_2, contact_fraction_h, contact_fraction_v, bottom_cap=bottom_cap)
+    mesh4 = _x_shape_quarter(-l / 2, d, -h/2, truncation_angle_2, contact_fraction_h, contact_fraction_v, bottom_cap=top_cap)
+    mesh4.translate(np.array([0, 0, h]))
     return combine_meshes(
-        mesh1, mesh2, mesh3, mesh4
+        mesh1,
+        mesh2,
+        mesh3,
+        mesh4
     )
 
 
@@ -37,30 +42,28 @@ def _x_shape_quarter(
         left_cap=False,
         left_patch=False
 ):
-    print(f'truncation angle {truncation_angle}')
-    x_delta = math.tan(truncation_angle) / 2
-    print(f'x delta {x_delta}')
+    x_delta = math.tan(truncation_angle) * d / 2
+    contact_h = contact_fraction_h * l
+    contact_v = contact_fraction_v * h
 
     vertices = np.array([
-        [1 - x_delta, -0.5, 0],
-        [0, -0.5, 1 - contact_fraction_v],
-        [0, -0.5, 1],
-        [contact_fraction_h, -0.5, 1],
-        [1 - x_delta, -0.5, contact_fraction_v],
-        [0, 0.5, 1 - contact_fraction_v],
-        [0, 0.5, 1],  # 6
-        [contact_fraction_h, 0.5, 1],  # 7
-        [1 + x_delta, 0.5, contact_fraction_v],  # 8
-        [1 + x_delta, 0.5, 0],  # 9
-        [1 - x_delta - contact_fraction_h, -0.5, 0],  # 10
-        [1 - contact_fraction_h, 0.5, 0],  # 11
-        [1 - x_delta, -0.5, 1],
-        [1 + x_delta, 0.5, 1],
-        [0, -0.5, 0],  # 14
-        [0, 0.5, 0],  # 15
+        [l - x_delta, -0.5 * d, 0],
+        [0, -0.5 * d, h - contact_v],
+        [0, -0.5 * d, h],
+        [contact_h, -0.5 * d, h],
+        [l - x_delta, -0.5 * d, contact_v],
+        [0, 0.5 * d, h - contact_v],
+        [0, 0.5 * d, h],  # 6
+        [contact_h, 0.5 * d, h],  # 7
+        [l + x_delta, 0.5 * d, contact_v],  # 8
+        [l + x_delta, 0.5 * d, 0],  # 9
+        [l - x_delta - contact_h, -0.5 * d, 0],  # 10
+        [l - contact_h, 0.5 * d, 0],  # 11
+        [l - x_delta, -0.5 * d, h],
+        [l + x_delta, 0.5 * d, h],
+        [0, -0.5 * d, 0],  # 14
+        [0, 0.5 * d, 0],  # 15
     ])
-    scale = np.array([l, d, h])
-    vertices *= scale
     inverse = h * l * d < 0
     faces = [
         *square(3, 1, 10, 4, inverse),

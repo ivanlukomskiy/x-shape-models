@@ -14,21 +14,19 @@ def circular_array(
     l_shape = 2 * r * math.sin(truncation_angle)
     center_distance = r * math.cos(truncation_angle)
     bricks = []
-    for i in range(n_horizontal):
-        # r = 10
-        # trunc angle ok
-        # l_shape ok
-        # center_distance ok
 
-        print(l_shape, d, h, math.degrees(truncation_angle), center_distance)
-        brick = x_shape(
-            l_shape, d, h / 2,
-            truncation_angle,
-            truncation_angle,
-            contact_fraction_h, contact_fraction_v,
-        )
-        brick.translate(np.array([0, center_distance, 0]))
-        brick.rotate(np.array([0, 0, 1]), angle_step * i)
-        bricks.append(brick)
+    for j in range(n_vertical):
+        for i in range(n_horizontal):
+            brick = x_shape(
+                l_shape, d, h,
+                truncation_angle,
+                -truncation_angle,
+                contact_fraction_h, contact_fraction_v,
+                top_cap=j == n_vertical - 1,
+                bottom_cap=j == 0,
+            )
+            brick.translate(np.array([0, center_distance, h * j]))
+            brick.rotate(np.array([0, 0, 1]), angle_step * i)
+            bricks.append(brick)
 
     return combine_meshes(*bricks)
