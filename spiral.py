@@ -14,20 +14,24 @@ def get_coords(r0, a, angle):
 
 
 def spiral_array(
-        r0, a, d, h, step_angle, n_horizontal, n_vertical, contact_fraction_h, contact_fraction_v, frame_len
+        r0, a, d, h, step_angle, total_length, n_vertical, contact_fraction_h, contact_fraction_v, frame_len
 ):
     current_angle = 0
+    current_length = 0
     r_prev = r0
     x_prev, y_prev = get_coords(r0, a, current_angle)
 
     bricks = []
     truncation_angles = []
 
-    for i in range(n_horizontal):
+    segments_count = 0
+    while current_length < total_length:
+        segments_count+=1
         current_angle += step_angle
         x1, y1 = get_coords(r0, a, current_angle)
         r1 = a * current_angle + r0
         length = math.hypot(x1 - x_prev, y1 - y_prev)
+        current_length += length
         k = 2 * r_prev * math.sin(step_angle / 2)
         delta_r = r1 - r_prev
         truncate_angle_2 = -math.pi / 2 + math.acos((length ** 2 + delta_r ** 2 - k ** 2) / (2 * length * delta_r))
@@ -43,23 +47,19 @@ def spiral_array(
             current[1] = 0
             break
         next = truncation_angles[i + 1]
-
         avg = -(current[1] + next[0]) / 2
         current[1] +=avg
         next[0] +=avg
 
-    current_angle = 0
-    r_prev = r0
-    x_prev, y_prev = get_coords(r0, a, current_angle)
 
     for j in range(n_vertical):
-        for i in range(n_horizontal):
+        current_angle = 0
+        x_prev, y_prev = get_coords(r0, a, current_angle)
+        for i in range(segments_count):
             current_angle += step_angle
             x1, y1 = get_coords(r0, a, current_angle)
             r1 = a * current_angle + r0
             length = math.hypot(x1 - x_prev, y1 - y_prev)
-            k = 2 * r_prev * math.sin(step_angle / 2)
-            delta_r = r1 - r_prev
 
             truncate_angle_2 = truncation_angles[i][0]
             truncate_angle_1 = truncation_angles[i][1]
@@ -75,11 +75,12 @@ def spiral_array(
                 contact_fraction_h, contact_fraction_v,
                 frame_top=j == n_vertical - 1,
                 frame_bottom=j == 0,
-                frame_len=frame_len
+                frame_len=frame_len,
+                left_cap=i == 0,
+                right_cap=i == segments_count - 1,
             )
             brick.rotate(np.array([0, 0, 1]), norm_angle)
             brick.translate(np.array([x_mid, y_mid, h * j]))
-            # brick.rotate(np.array([0, 0, 1]), current_angle - step_angle)
             bricks.append(brick)
 
             x_prev, y_prev, r_prev = x1, y1, r1

@@ -16,16 +16,22 @@ def x_shape(
         frame_top=False,
         frame_bottom=False,
         frame_len=0,
+        left_cap=False,
+        right_cap=False,
 ):
-    mesh1 = _x_shape_quarter(l / 2, d, h/2 , truncation_angle_1, contact_fraction_h, contact_fraction_v,
-                             bottom_cap=bottom_cap, frame=frame_bottom, frame_len=frame_len, bottom_patch=frame_bottom)
-    mesh2 = _x_shape_quarter(l / 2, d, -h/2, truncation_angle_1, contact_fraction_h, contact_fraction_v,
-                             bottom_cap=top_cap, frame=frame_top, frame_len=-frame_len, bottom_patch=frame_top)
+    mesh1 = _x_shape_quarter(l / 2, d, h / 2, truncation_angle_1, contact_fraction_h, contact_fraction_v,
+                             bottom_cap=bottom_cap, frame=frame_bottom, frame_len=frame_len, bottom_patch=frame_bottom,
+                             right_cap=right_cap)
+    mesh2 = _x_shape_quarter(l / 2, d, -h / 2, truncation_angle_1, contact_fraction_h, contact_fraction_v,
+                             bottom_cap=top_cap, frame=frame_top, frame_len=-frame_len, bottom_patch=frame_top,
+                             right_cap=right_cap)
     mesh2.translate(np.array([0, 0, h]))
     mesh3 = _x_shape_quarter(-l / 2, d, h/2, truncation_angle_2, contact_fraction_h, contact_fraction_v,
-                             bottom_cap=bottom_cap, frame=frame_bottom, frame_len=frame_len, bottom_patch=frame_bottom)
+                             bottom_cap=bottom_cap, frame=frame_bottom, frame_len=frame_len, bottom_patch=frame_bottom,
+                             right_cap=left_cap)
     mesh4 = _x_shape_quarter(-l / 2, d, -h/2, truncation_angle_2, contact_fraction_h, contact_fraction_v,
-                             bottom_cap=top_cap, frame=frame_top, frame_len=-frame_len, bottom_patch=frame_top)
+                             bottom_cap=top_cap, frame=frame_top, frame_len=-frame_len, bottom_patch=frame_top,
+                             right_cap=left_cap)
     mesh4.translate(np.array([0, 0, h]))
     return combine_meshes(
         mesh1,
@@ -94,6 +100,8 @@ def _x_shape_quarter(
         faces.extend(square(7, 6, 2, 3, inverse))
     if right_cap:
         faces.extend(square(4, 0, 9, 8, inverse))
+        if frame:
+            faces.extend(square(0, 16, 19, 9, inverse))
     if bottom_cap:
         faces.extend(square(0, 10, 11, 9, inverse))
     if left_cap:
