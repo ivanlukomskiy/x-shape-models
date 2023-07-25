@@ -13,12 +13,19 @@ def x_shape(
         contact_fraction_v,
         bottom_cap=False,
         top_cap=False,
+        frame_top=False,
+        frame_bottom=False,
+        frame_len=0,
 ):
-    mesh1 = _x_shape_quarter(l / 2, d, h/2 , truncation_angle_1, contact_fraction_h, contact_fraction_v, bottom_cap=bottom_cap)
-    mesh2 = _x_shape_quarter(l / 2, d, -h/2, truncation_angle_1, contact_fraction_h, contact_fraction_v, bottom_cap=top_cap)
+    mesh1 = _x_shape_quarter(l / 2, d, h/2 , truncation_angle_1, contact_fraction_h, contact_fraction_v,
+                             bottom_cap=bottom_cap, frame=frame_bottom, frame_len=frame_len, bottom_patch=frame_bottom)
+    mesh2 = _x_shape_quarter(l / 2, d, -h/2, truncation_angle_1, contact_fraction_h, contact_fraction_v,
+                             bottom_cap=top_cap, frame=frame_top, frame_len=-frame_len, bottom_patch=frame_top)
     mesh2.translate(np.array([0, 0, h]))
-    mesh3 = _x_shape_quarter(-l / 2, d, h/2, truncation_angle_2, contact_fraction_h, contact_fraction_v, bottom_cap=bottom_cap)
-    mesh4 = _x_shape_quarter(-l / 2, d, -h/2, truncation_angle_2, contact_fraction_h, contact_fraction_v, bottom_cap=top_cap)
+    mesh3 = _x_shape_quarter(-l / 2, d, h/2, truncation_angle_2, contact_fraction_h, contact_fraction_v,
+                             bottom_cap=bottom_cap, frame=frame_bottom, frame_len=frame_len, bottom_patch=frame_bottom)
+    mesh4 = _x_shape_quarter(-l / 2, d, -h/2, truncation_angle_2, contact_fraction_h, contact_fraction_v,
+                             bottom_cap=top_cap, frame=frame_top, frame_len=-frame_len, bottom_patch=frame_top)
     mesh4.translate(np.array([0, 0, h]))
     return combine_meshes(
         mesh1,
@@ -40,7 +47,9 @@ def _x_shape_quarter(
         right_cap=False,
         right_patch=False,
         left_cap=False,
-        left_patch=False
+        left_patch=False,
+        frame=False,
+        frame_len=0,
 ):
     x_delta = math.tan(truncation_angle) * d / 2
     contact_h = contact_fraction_h * l
@@ -63,6 +72,10 @@ def _x_shape_quarter(
         [l + x_delta, 0.5 * d, h],
         [0, -0.5 * d, 0],  # 14
         [0, 0.5 * d, 0],  # 15
+        [l - x_delta, -0.5 * d, -frame_len],
+        [0, -0.5 * d, -frame_len],
+        [0, 0.5 * d, -frame_len],
+        [l + x_delta, 0.5 * d, -frame_len],
     ])
     inverse = h * l * d < 0
     faces = [
@@ -93,5 +106,9 @@ def _x_shape_quarter(
         faces.extend(square(10, 11, 15, 14, inverse))
     if left_patch:
         faces.extend(square(1, 14, 15, 5, inverse))
+    if frame:
+        faces.extend(square(0, 14, 17, 16, inverse))
+        faces.extend(square(15, 9, 19, 18, inverse))
+        faces.extend(square(16, 17, 18, 19, inverse))
 
     return build_mesh(faces, vertices)
