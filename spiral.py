@@ -23,6 +23,35 @@ def spiral_array(
     bricks = []
     truncation_angles = []
 
+    for i in range(n_horizontal):
+        current_angle += step_angle
+        x1, y1 = get_coords(r0, a, current_angle)
+        r1 = a * current_angle + r0
+        length = math.hypot(x1 - x_prev, y1 - y_prev)
+        k = 2 * r_prev * math.sin(step_angle / 2)
+        delta_r = r1 - r_prev
+        truncate_angle_2 = -math.pi / 2 + math.acos((length ** 2 + delta_r ** 2 - k ** 2) / (2 * length * delta_r))
+        truncate_angle_1 = -math.acos((length ** 2 + k ** 2 - delta_r ** 2) / (2 * length * k)) + step_angle / 2
+        truncation_angles.append([truncate_angle_1, truncate_angle_2])
+        x_prev, y_prev, r_prev = x1, y1, r1
+
+    for i in range(len(truncation_angles)):
+        current = truncation_angles[i]
+        if i == 0:
+            current[0] = 0
+        if i == len(truncation_angles) - 1:
+            current[1] = 0
+            break
+        next = truncation_angles[i + 1]
+
+        avg = -(current[1] + next[0]) / 2
+        current[1] +=avg
+        next[0] +=avg
+
+    current_angle = 0
+    r_prev = r0
+    x_prev, y_prev = get_coords(r0, a, current_angle)
+
     for j in range(n_vertical):
         for i in range(n_horizontal):
             current_angle += step_angle
@@ -32,8 +61,8 @@ def spiral_array(
             k = 2 * r_prev * math.sin(step_angle / 2)
             delta_r = r1 - r_prev
 
-            truncate_angle_1 = -math.pi / 2 + math.acos((length ** 2 + delta_r ** 2 - k ** 2) / (2 * length * delta_r))
-            truncate_angle_2 = -math.acos((length ** 2 + k ** 2 - delta_r ** 2) / (2 * length * k)) + step_angle / 2
+            truncate_angle_2 = truncation_angles[i][0]
+            truncate_angle_1 = truncation_angles[i][1]
 
             x_mid = (x1 + x_prev) / 2
             y_mid = (y1 + y_prev) / 2
