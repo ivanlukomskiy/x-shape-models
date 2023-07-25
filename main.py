@@ -1,19 +1,20 @@
 import math
 
 import numpy as np
+import vtkplotlib as vpl
 from stl import mesh
 
-filename='net.stl'
-width = 2
-height = 3
+filename = 'wider.stl'
+width = 3
+height = 4
 line = 0.42
-middle_line_h = 0.6
-middle_line_v = 0.6
+middle_line_h = 1.2
+middle_line_v = 1.2
 thickness = 0.42
-v_cells = 13
-h_cells = 11
-frame_thickness = 10
-frame_width = 2
+v_cells = 50
+h_cells = 70
+frame_thickness = 80
+frame_width = 5
 
 
 def rotate_points_around_z(points, angle_degrees):
@@ -120,6 +121,7 @@ def array(obj, dims, num_rows, num_cols, num_layers):
                 if row == 0 and col == 0 and layer == 0:
                     continue
                 _copy = mesh.Mesh(obj.data.copy())
+                import ipdb; ipdb.set_trace()
                 # pad the space between objects by 10% of the dimension being
                 # translated
                 if col != 0:
@@ -265,7 +267,8 @@ def frame():
                             [-height * (v_cells - 1), -width, frame_thickness / 2 - thickness / 2],
                             270, [1, 1, 1])
 
-    c = cap([-width * (h_cells - 1), -height * (v_cells - 1), frame_thickness / 2 - thickness / 2], [1, 1, 1], 180, frame_thickness, width * h_cells)
+    c = cap([-width * (h_cells - 1), -height * (v_cells - 1), frame_thickness / 2 - thickness / 2], [1, 1, 1], 180,
+            frame_thickness, width * h_cells)
     c_patch = cap_patch(180, [-width * (h_cells - 2), height * (v_cells - 1), 0], [1, -1, 1], width)
     c_patches = array(c_patch, [-width, height, 0], 1, h_cells, 1)
 
@@ -292,3 +295,6 @@ net_copies = array(x, [width, height, 0], v_cells, h_cells, 1)
 res = combine_meshes(x, frame(), *net_copies)
 
 res.save(filename)
+
+# vpl.mesh_plot(res)
+# vpl.show(block=True)
