@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader'
 import Stats from 'three/examples/jsm/libs/stats.module'
+import {Vector3} from "three";
 
 const scene = new THREE.Scene()
 scene.add(new THREE.AxesHelper(5))
@@ -11,12 +12,12 @@ light.position.set(20, 20, 20)
 scene.add(light)
 
 const camera = new THREE.PerspectiveCamera(
-    99,
+    30,
     window.innerWidth / window.innerHeight,
     0.1,
     1000
 )
-camera.position.y = -2
+camera.position.y = -6
 
 const renderer = new THREE.WebGLRenderer()
 renderer.setSize(window.innerWidth, window.innerHeight)

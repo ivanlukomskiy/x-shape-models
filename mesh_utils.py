@@ -2,17 +2,28 @@ import numpy as np
 from stl import mesh
 
 
-def square(a, b, c, d):
-    return [
-        [a, b, d],
-        [d, b, c]
-    ]
+def square(a, b, c, d, inverse=False):
+    if inverse:
+        return [
+            [a, d, b],
+            [d, c, b]
+        ]
+    else:
+        return [
+            [a, b, d],
+            [d, b, c]
+        ]
 
 
-def triangle(a, b, c):
-    return [
-        [a, b, c],
-    ]
+def triangle(a, b, c, inverse=False):
+    if inverse:
+        return [
+            [a, c, b],
+        ]
+    else:
+        return [
+            [a, b, c],
+        ]
 
 
 def build_mesh(faces, vertices):
@@ -22,3 +33,7 @@ def build_mesh(faces, vertices):
         for j in range(3):
             res.vectors[i][j] = vertices[f[j], :]
     return res
+
+
+def combine_meshes(*meshes):
+    return mesh.Mesh(np.concatenate([m.data for m in meshes]))
