@@ -18,20 +18,32 @@ def x_shape(
         frame_len=0,
         left_cap=False,
         right_cap=False,
+        fullness=None,
 ):
+    if fullness is None:
+        fullness = [0, 0, 0, 0]
     mesh1 = _x_shape_quarter(l / 2, d, h / 2, truncation_angle_1, contact_fraction_h, contact_fraction_v,
                              bottom_cap=bottom_cap, frame=frame_bottom, frame_len=frame_len, bottom_patch=frame_bottom,
-                             right_cap=right_cap)
+                             side_cap=right_cap,
+                             fullness_a=min(fullness[3] * 2, 1),
+                             # fullness_b=0.1)
+                             fullness_b=max(fullness[2] * 2 - 1, 0))
     mesh2 = _x_shape_quarter(l / 2, d, -h / 2, truncation_angle_1, contact_fraction_h, contact_fraction_v,
                              bottom_cap=top_cap, frame=frame_top, frame_len=-frame_len, bottom_patch=frame_top,
-                             right_cap=right_cap)
+                             side_cap=right_cap,
+                             fullness_a=max(fullness[3] * 2 - 1, 0),
+                             fullness_b=min(fullness[0] * 2, 1))
     mesh2.translate(np.array([0, 0, h]))
-    mesh3 = _x_shape_quarter(-l / 2, d, h/2, truncation_angle_2, contact_fraction_h, contact_fraction_v,
+    mesh3 = _x_shape_quarter(-l / 2, d, h / 2, truncation_angle_2, contact_fraction_h, contact_fraction_v,
                              bottom_cap=bottom_cap, frame=frame_bottom, frame_len=frame_len, bottom_patch=frame_bottom,
-                             right_cap=left_cap)
-    mesh4 = _x_shape_quarter(-l / 2, d, -h/2, truncation_angle_2, contact_fraction_h, contact_fraction_v,
+                             side_cap=left_cap,
+                             fullness_a=min(fullness[1] * 2, 1),
+                             fullness_b=max(fullness[2] * 2 - 1, 0))
+    mesh4 = _x_shape_quarter(-l / 2, d, -h / 2, truncation_angle_2, contact_fraction_h, contact_fraction_v,
                              bottom_cap=top_cap, frame=frame_top, frame_len=-frame_len, bottom_patch=frame_top,
-                             right_cap=left_cap)
+                             side_cap=left_cap,
+                             fullness_a=max(fullness[1] * 2 - 1, 0),
+                             fullness_b=min(fullness[0] * 2, 1))
     mesh4.translate(np.array([0, 0, h]))
     return combine_meshes(
         mesh1,
@@ -46,74 +58,112 @@ def _x_shape_quarter(
         truncation_angle,
         contact_fraction_h,
         contact_fraction_v,
-        top_cap=False,
+        fullness_a=0,
+        fullness_b=0,
         bottom_cap=False,
-        top_patch=False,
         bottom_patch=False,
-        right_cap=False,
-        right_patch=False,
-        left_cap=False,
-        left_patch=False,
+        side_cap=False,
         frame=False,
         frame_len=0,
 ):
-    x_delta = math.tan(truncation_angle) * d / 2
+    delta_x = math.tan(truncation_angle) * d / 2
     contact_h = contact_fraction_h * l
     contact_v = contact_fraction_v * h
+    h_a = contact_v + (h - contact_v) * math.fabs(fullness_a)
+    h_b = (h - contact_v) * (1 - math.fabs(fullness_b))
 
     vertices = np.array([
-        [l - x_delta, -0.5 * d, 0],
-        [0, -0.5 * d, h - contact_v],
-        [0, -0.5 * d, h],
-        [contact_h, -0.5 * d, h],
-        [l - x_delta, -0.5 * d, contact_v],
-        [0, 0.5 * d, h - contact_v],
+        [l - delta_x, -0.5 * d, 0],  # 0
+        [0, -0.5 * d, h - contact_v],  # 1
+        [0, -0.5 * d, h],  # 2
+        [contact_h, -0.5 * d, h],  # 3
+        [l - delta_x, -0.5 * d, contact_v],  # 4
+        [0, 0.5 * d, h - contact_v],  # 5
         [0, 0.5 * d, h],  # 6
         [contact_h, 0.5 * d, h],  # 7
-        [l + x_delta, 0.5 * d, contact_v],  # 8
-        [l + x_delta, 0.5 * d, 0],  # 9
-        [l - x_delta - contact_h, -0.5 * d, 0],  # 10
+        [l + delta_x, 0.5 * d, contact_v],  # 8
+        [l + delta_x, 0.5 * d, 0],  # 9
+        [l - delta_x - contact_h, -0.5 * d, 0],  # 10
         [l - contact_h, 0.5 * d, 0],  # 11
-        [l - x_delta, -0.5 * d, h],
-        [l + x_delta, 0.5 * d, h],
+        [l - delta_x, -0.5 * d, h],  # 12
+        [l + delta_x, 0.5 * d, h],  # 13
         [0, -0.5 * d, 0],  # 14
         [0, 0.5 * d, 0],  # 15
-        [l - x_delta, -0.5 * d, -frame_len],
-        [0, -0.5 * d, -frame_len],
-        [0, 0.5 * d, -frame_len],
-        [l + x_delta, 0.5 * d, -frame_len],
+        [l - delta_x, -0.5 * d, -frame_len],  # 16
+        [0, -0.5 * d, -frame_len],  # 17
+        [0, 0.5 * d, -frame_len],  # 18
+        [l + delta_x, 0.5 * d, -frame_len],  # 19
+
+        [contact_h + (l - delta_x - contact_h) * (1 - math.fabs(fullness_a)), -0.5 * d, h_a],  # 20
+        [l - delta_x, -0.5 * d, h_a],  # 21
+        [l + delta_x, 0.5 * d, h_a],  # 22
+        [contact_h + (l + delta_x - contact_h) * (1 - math.fabs(fullness_a)), 0.5 * d, h_a],  # 23
+
+        [(l - delta_x - contact_h) * (math.fabs(fullness_b)), -0.5 * d, h_b],  # 24
+        [0, -0.5 * d, h_b],  # 25
+        [0, 0.5 * d, h_b],  # 26
+        [(l - delta_x - contact_h) * (math.fabs(fullness_b)), 0.5 * d, h_b],  # 27
     ])
     inverse = h * l * d < 0
     faces = [
+        # left side
         *square(3, 1, 10, 4, inverse),
         *triangle(1, 3, 2, inverse),
         *triangle(10, 0, 4, inverse),
 
+        # right side
         *square(5, 7, 8, 11, inverse),
         *triangle(6, 7, 5, inverse),
         *triangle(8, 9, 11, inverse),
-
-        *square(1, 5, 11, 10, inverse),
-        *square(8, 7, 3, 4, inverse),
     ]
-    if top_cap:
-        faces.extend(square(7, 6, 2, 3, inverse))
-    if right_cap:
-        faces.extend(square(4, 0, 9, 8, inverse))
+
+    # upper surface
+    if fullness_a == 0:
+        faces.extend(square(8, 7, 3, 4, inverse))
+    elif fullness_a > 0:
+        faces.extend(square(23, 7, 3, 20, inverse))
+        faces.extend(square(23, 20, 21, 22, inverse))
+        faces.extend(triangle(8, 23, 22, inverse))
+        faces.extend(triangle(4, 21, 20, inverse))
+    else:
+        faces.extend(square(22, 21, 20, 23, inverse))
+        faces.extend(square(8, 23, 20, 4, inverse))
+        # sides
+        faces.extend(square(7, 13, 22, 23, inverse))
+        faces.extend(square(12, 3, 20, 21, inverse))
+
+    # bottom surface
+    if fullness_b == 0:
+        faces.extend(square(1, 5, 11, 10, inverse))
+    elif fullness_b > 0:
+        faces.extend(square(25, 26, 27, 24, inverse))
+        faces.extend(square(24, 27, 11, 10, inverse))
+        faces.extend(triangle(5, 27, 26, inverse))
+        faces.extend(triangle(1, 25, 24, inverse))
+    else:
+        faces.extend(square(1, 5, 27, 24, inverse))
+        faces.extend(square(27, 26, 25, 24, inverse))
+        # sides
+        faces.extend(square(27, 11, 15, 26, inverse))
+        faces.extend(square(25, 14, 10, 24, inverse))
+
+    if side_cap:
         if frame:
             faces.extend(square(0, 16, 19, 9, inverse))
+        if fullness_a > 0:
+            faces.extend(square(21, 0, 9, 22, inverse))
+        elif fullness_a < 0:
+            faces.extend(square(4, 0, 9, 8, inverse))
+            faces.extend(square(12, 21, 24, 13, inverse))
+        else:
+            faces.extend(square(4, 0, 9, 8, inverse))
+
     if bottom_cap:
         faces.extend(square(0, 10, 11, 9, inverse))
-    if left_cap:
-        faces.extend(square(1, 2, 6, 5, inverse))
-    if top_patch:
-        faces.extend(square(12, 3, 7, 13, inverse))
-    if right_patch:
-        faces.extend(square(4, 12, 13, 8, inverse))
-    if bottom_patch:
+
+    if bottom_patch and fullness_b >= 0:
         faces.extend(square(10, 11, 15, 14, inverse))
-    if left_patch:
-        faces.extend(square(1, 14, 15, 5, inverse))
+
     if frame:
         faces.extend(square(0, 14, 17, 16, inverse))
         faces.extend(square(15, 9, 19, 18, inverse))

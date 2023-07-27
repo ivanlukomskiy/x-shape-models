@@ -26,7 +26,7 @@ def spiral_array(
 
     segments_count = 0
     while current_length < total_length:
-        segments_count+=1
+        segments_count += 1
         current_angle += step_angle
         x1, y1 = get_coords(r0, a, current_angle)
         r1 = a * current_angle + r0
@@ -48,9 +48,8 @@ def spiral_array(
             break
         next = truncation_angles[i + 1]
         avg = -(current[1] + next[0]) / 2
-        current[1] +=avg
-        next[0] +=avg
-
+        current[1] += avg
+        next[0] += avg
 
     for j in range(n_vertical):
         current_angle = 0
@@ -68,6 +67,10 @@ def spiral_array(
             y_mid = (y1 + y_prev) / 2
             norm_angle = - math.atan2(y1 - y_prev, x1 - x_prev)
 
+            fullness_1 = min(max((10-j * 2) * 0.1, 0), 1)
+            fullness_2 = min(max((9-j * 2) * 0.1, 0), 1)
+            fullness_3 = min(max((8-j * 2) * 0.1, 0), 1)
+
             brick = x_shape(
                 length, d, h,
                 truncate_angle_1,
@@ -78,6 +81,7 @@ def spiral_array(
                 frame_len=frame_len,
                 left_cap=i == 0,
                 right_cap=i == segments_count - 1,
+                fullness=[fullness_3, fullness_2, fullness_1, fullness_2]
             )
             brick.rotate(np.array([0, 0, 1]), norm_angle)
             brick.translate(np.array([x_mid, y_mid, h * j]))
