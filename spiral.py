@@ -1,6 +1,7 @@
 import math
 
 import numpy as np
+from perlin_noise import PerlinNoise
 
 from mesh_utils import combine_meshes
 from x_shape import x_shape
@@ -13,9 +14,14 @@ def get_coords(r0, a, angle):
     )
 
 
+def get_noise(noise, x, y):
+    level = (1 + noise([x / 30, y / 30])) * 0.7
+    return min(level ** 2, 1)
+
 def spiral_array(
         r0, a, d, h, step_angle, total_length, n_vertical, contact_fraction_h, contact_fraction_v, frame_len
 ):
+    noise = PerlinNoise(seed=22)
     current_angle = 0
     current_length = 0
     r_prev = r0
@@ -53,12 +59,14 @@ def spiral_array(
 
     for j in range(n_vertical):
         current_angle = 0
+        current_length = 0
         x_prev, y_prev = get_coords(r0, a, current_angle)
         for i in range(segments_count):
             current_angle += step_angle
             x1, y1 = get_coords(r0, a, current_angle)
             r1 = a * current_angle + r0
             length = math.hypot(x1 - x_prev, y1 - y_prev)
+            current_length += length
 
             truncate_angle_2 = truncation_angles[i][0]
             truncate_angle_1 = truncation_angles[i][1]
@@ -67,9 +75,16 @@ def spiral_array(
             y_mid = (y1 + y_prev) / 2
             norm_angle = - math.atan2(y1 - y_prev, x1 - x_prev)
 
-            fullness_1 = min(max((10-j * 2) * 0.1, 0), 1)
-            fullness_2 = min(max((9-j * 2) * 0.1, 0), 1)
-            fullness_3 = min(max((8-j * 2) * 0.1, 0), 1)
+            fullness = [
+                get_noise(noise, current_length, h * (j + .5)),
+                get_noise(noise, current_length - length / 2, h * j),
+                get_noise(noise, current_length, h * (j - .5)),
+                get_noise(noise, current_length + length / 2, h * j),
+            ]
+            # print(fullness[3], fullness[1], current_length - length / 2, current_length + length / 2, length)
+            print(fullness)
+            # f = min(j * 0.1, 1)
+            # fullness = [f,f,f,f]
 
             brick = x_shape(
                 length, d, h,
@@ -81,12 +96,15 @@ def spiral_array(
                 frame_len=frame_len,
                 left_cap=i == 0,
                 right_cap=i == segments_count - 1,
-                fullness=[fullness_3, fullness_2, fullness_1, fullness_2]
+                fullness=fullness
             )
             brick.rotate(np.array([0, 0, 1]), norm_angle)
-            brick.translate(np.array([x_mid, y_mid, h * j]))
+            # brick.translate(np.array([0,0,h * j * 1.1]))
+            brick.translate(np.array([x_mid, y_mid, h * j * 1.]))
             bricks.append(brick)
 
             x_prev, y_prev, r_prev = x1, y1, r1
+            # break
+        # break
 
     return combine_meshes(*bricks)
