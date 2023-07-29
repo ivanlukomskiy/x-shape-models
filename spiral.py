@@ -3,7 +3,7 @@ import math
 import numpy as np
 from perlin_noise import PerlinNoise
 
-from mesh_utils import combine_meshes
+from mesh_utils import combine_meshes, get_noise, noise
 from x_shape import x_shape
 
 
@@ -14,14 +14,10 @@ def get_coords(r0, a, angle):
     )
 
 
-def get_noise(noise, x, y):
-    level = (1 + noise([x / 30, y / 30])) * 0.7
-    return min(level ** 2, 1)
 
 def spiral_array(
         r0, a, d, h, step_angle, total_length, n_vertical, contact_fraction_h, contact_fraction_v, frame_len
 ):
-    noise = PerlinNoise(seed=22)
     current_angle = 0
     current_length = 0
     r_prev = r0
@@ -82,7 +78,7 @@ def spiral_array(
                 get_noise(noise, current_length + length / 2, h * j),
             ]
             # print(fullness[3], fullness[1], current_length - length / 2, current_length + length / 2, length)
-            print(fullness)
+            # print(fullness)
             # f = min(j * 0.1, 1)
             # fullness = [f,f,f,f]
 

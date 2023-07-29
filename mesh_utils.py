@@ -1,5 +1,8 @@
 import numpy as np
+from perlin_noise import PerlinNoise
 from stl import mesh
+
+noise = PerlinNoise(seed=22)
 
 
 def square(a, b, c, d, inverse=False):
@@ -37,3 +40,8 @@ def build_mesh(faces, vertices):
 
 def combine_meshes(*meshes):
     return mesh.Mesh(np.concatenate([m.data for m in meshes]))
+
+
+def get_noise(noise, x, y):
+    level = (1 + noise([x / 30, y / 30])) * 0.7
+    return min(level ** 2, 1)

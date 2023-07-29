@@ -92,6 +92,9 @@ def _x_shape_quarter(
         shift_b = 1-math.fabs(fullness_b)
         h_b = (h - contact_v) * (math.fabs(fullness_b))  # == 0
 
+    # if trace:
+    #     print(fullness_a, fullness_b)
+
     vertices = np.array([
         [l - delta_x, -0.5 * d, 0],  # 0
         [0, -0.5 * d, h - contact_v],  # 1
@@ -104,7 +107,7 @@ def _x_shape_quarter(
         [l + delta_x, 0.5 * d, contact_v],  # 8
         [l + delta_x, 0.5 * d, 0],  # 9
         [l - delta_x - contact_h, -0.5 * d, 0],  # 10
-        [l - contact_h, 0.5 * d, 0],  # 11
+        [l - delta_x - contact_h, 0.5 * d, 0],  # 11
         [l - delta_x, -0.5 * d, h],  # 12
         [l + delta_x, 0.5 * d, h],  # 13
         [0, -0.5 * d, 0],  # 14
