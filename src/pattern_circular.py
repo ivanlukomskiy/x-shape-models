@@ -2,8 +2,8 @@ import math
 
 import numpy as np
 
-from mesh_utils import combine_meshes
-from x_shape import x_shape
+from src.mesh_utils import combine_meshes
+from src.x_shape import x_shape
 
 
 def get_fullness(angle, h_fraction):
@@ -11,12 +11,23 @@ def get_fullness(angle, h_fraction):
 
 
 def circular_array(
-        r, d, h, n_horizontal, n_vertical, contact_fraction_h, contact_fraction_v, frame_len
+        config
+        # r, d, h, n_horizontal, n_vertical, contact_fraction_h, contact_fraction_v, frame_len
 ):
+    radius = config['radius']
+    x_width = config['x_width']
+    n_horizontal = round(math.pi * 2 * radius / x_width)
+    x_height = config['x_height']
+    n_vertical = round(config['height'] / x_height)
+    thickness = config['thickness']
+    contact_fraction_h = config['contact_fraction_h']
+    contact_fraction_v = config['contact_fraction_v']
+    frame_len = config['frame_len']
+
     angle_step = 2 * math.pi / n_horizontal
     truncation_angle = angle_step / 2
-    l_shape = 2 * r * math.sin(truncation_angle)
-    center_distance = r * math.cos(truncation_angle)
+    l_shape = 2 * radius * math.sin(truncation_angle)
+    center_distance = radius * math.cos(truncation_angle)
     bricks = []
 
     for j in range(n_vertical):
@@ -28,7 +39,7 @@ def circular_array(
                 get_fullness((i + 0.5) * angle_step, j / n_vertical),
             ]
             brick = x_shape(
-                l_shape, d, h,
+                l_shape, thickness, x_height,
                 truncation_angle,
                 -truncation_angle,
                 contact_fraction_h, contact_fraction_v,
@@ -37,7 +48,7 @@ def circular_array(
                 frame_len=frame_len,
                 fullness=fullness
             )
-            brick.translate(np.array([0, center_distance, h * j]))
+            brick.translate(np.array([0, center_distance, x_height * j]))
             brick.rotate(np.array([0, 0, 1]), angle_step * i)
             bricks.append(brick)
 

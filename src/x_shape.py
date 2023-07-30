@@ -2,7 +2,7 @@ import math
 
 import numpy as np
 
-from mesh_utils import square, triangle, build_mesh, combine_meshes
+from src.mesh_utils import square, triangle, build_mesh, combine_meshes
 
 
 def x_shape(
@@ -22,14 +22,16 @@ def x_shape(
 ):
     if fullness is None:
         fullness = [0, 0, 0, 0]
-    # its 0.6 0.6 0.6 0.6
+
+    # left bottom quarter
     mesh1 = _x_shape_quarter(l / 2, d, h / 2, truncation_angle_1, contact_fraction_h, contact_fraction_v,
                              bottom_cap=bottom_cap, frame=frame_bottom, frame_len=frame_len, bottom_patch=frame_bottom,
                              side_cap=right_cap,
                              fullness_a=min(fullness[3] * 2, 1),
-                             # fullness_b=0.1)
                              fullness_b=-max(fullness[2] * 2 - 1, 0),
-                             a_cap=fullness[3] <= 0.5, trace=True)
+                             a_cap=fullness[3] <= 0.5,)
+
+    # left top quarter
     mesh2 = _x_shape_quarter(l / 2, d, -h / 2, truncation_angle_1, contact_fraction_h, contact_fraction_v,
                              bottom_cap=top_cap, frame=frame_top, frame_len=-frame_len, bottom_patch=frame_top,
                              side_cap=right_cap,
@@ -37,12 +39,16 @@ def x_shape(
                              fullness_b=min(fullness[0] * 2, 1),
                              b_cap=fullness[0] <= 0.5)
     mesh2.translate(np.array([0, 0, h]))
+
+    # right bottom quarter
     mesh3 = _x_shape_quarter(-l / 2, d, h / 2, truncation_angle_2, contact_fraction_h, contact_fraction_v,
                              bottom_cap=bottom_cap, frame=frame_bottom, frame_len=frame_len, bottom_patch=frame_bottom,
                              side_cap=left_cap,
                              fullness_a=min(fullness[1] * 2, 1),
                              fullness_b=-max(fullness[2] * 2 - 1, 0),
                              a_cap=fullness[1] <= 0.5)
+
+    # right top quarter
     mesh4 = _x_shape_quarter(-l / 2, d, -h / 2, truncation_angle_2, contact_fraction_h, contact_fraction_v,
                              bottom_cap=top_cap, frame=frame_top, frame_len=-frame_len, bottom_patch=frame_top,
                              side_cap=left_cap,
@@ -50,12 +56,8 @@ def x_shape(
                              fullness_b=min(fullness[0] * 2, 1),
                              b_cap=fullness[0] <= 0.5)
     mesh4.translate(np.array([0, 0, h]))
-    return combine_meshes(
-        mesh1,
-        mesh2,
-        mesh3,
-        mesh4
-    )
+
+    return combine_meshes(mesh1, mesh2, mesh3, mesh4)
 
 
 def _x_shape_quarter(
@@ -72,7 +74,6 @@ def _x_shape_quarter(
         side_cap=False,
         frame=False,
         frame_len=0,
-        trace=False,
 ):
     delta_x = math.tan(truncation_angle) * d / 2
     contact_h = contact_fraction_h * l
@@ -91,9 +92,6 @@ def _x_shape_quarter(
     else:
         shift_b = 1 - math.fabs(fullness_b)
         h_b = (h - contact_v) * (math.fabs(fullness_b))  # == 0
-
-    # if trace:
-    #     print(fullness_a, fullness_b)
 
     vertices = np.array([
         [l - delta_x, -0.5 * d, 0],  # 0
@@ -142,7 +140,6 @@ def _x_shape_quarter(
         *triangle(8, 9, 11, inverse),
     ]
 
-    # upper surface
     if fullness_a == 0:
         faces.extend(square(8, 7, 3, 4, inverse))
     elif fullness_a > 0:
@@ -155,7 +152,6 @@ def _x_shape_quarter(
     else:
         faces.extend(square(22, 21, 20, 23, inverse))
         faces.extend(square(8, 23, 20, 4, inverse))
-        # sides
         faces.extend(square(7, 13, 22, 23, inverse))
         faces.extend(square(12, 3, 20, 21, inverse))
 
