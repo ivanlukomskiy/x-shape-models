@@ -2,7 +2,7 @@ import math
 
 import numpy as np
 
-from mesh_utils import combine_meshes, get_noise, noise
+from mesh_utils import combine_meshes
 from x_shape import x_shape
 
 

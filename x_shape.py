@@ -80,7 +80,7 @@ def _x_shape_quarter(
 
     if fullness_a > 0:
         h_a = contact_v + (h - contact_v) * fullness_a
-        shift_a = 1-math.fabs(fullness_a)
+        shift_a = 1 - math.fabs(fullness_a)
     else:
         h_a = contact_v + (h - contact_v) * (1 - math.fabs(fullness_a))
         shift_a = math.fabs(fullness_a)
@@ -89,7 +89,7 @@ def _x_shape_quarter(
         shift_b = math.fabs(fullness_b)
         h_b = (h - contact_v) * (1 - math.fabs(fullness_b))  # == 0
     else:
-        shift_b = 1-math.fabs(fullness_b)
+        shift_b = 1 - math.fabs(fullness_b)
         h_b = (h - contact_v) * (math.fabs(fullness_b))  # == 0
 
     # if trace:
@@ -130,12 +130,14 @@ def _x_shape_quarter(
     inverse = h * l * d < 0
     faces = [
         # left side
-        *square(3, 1, 10, 4, inverse),
+        *square(3, 1, 24, 20, inverse),
+        *square(20, 24, 10, 4, inverse),
         *triangle(1, 3, 2, inverse),
         *triangle(10, 0, 4, inverse),
 
         # right side
-        *square(5, 7, 8, 11, inverse),
+        *square(5, 7, 23, 27, inverse),
+        *square(27, 23, 8, 11, inverse),
         *triangle(6, 7, 5, inverse),
         *triangle(8, 9, 11, inverse),
     ]
@@ -157,7 +159,6 @@ def _x_shape_quarter(
         faces.extend(square(7, 13, 22, 23, inverse))
         faces.extend(square(12, 3, 20, 21, inverse))
 
-    # fixme prevent cap on full b-fullness
     if fullness_b == 0:
         faces.extend(square(1, 5, 11, 10, inverse))
     elif fullness_b > 0:
@@ -192,8 +193,10 @@ def _x_shape_quarter(
         faces.extend(square(10, 11, 15, 14, inverse))
 
     if frame:
-        faces.extend(square(0, 14, 17, 16, inverse))
-        faces.extend(square(15, 9, 19, 18, inverse))
+        faces.extend(square(0, 10, 17, 16, inverse))
+        faces.extend(triangle(10, 14, 17, inverse))
+        faces.extend(square(15, 11, 19, 18, inverse))
+        faces.extend(triangle(11, 9, 19, inverse))
         faces.extend(square(16, 17, 18, 19, inverse))
 
     return build_mesh(faces, vertices)

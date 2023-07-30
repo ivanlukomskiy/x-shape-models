@@ -1,4 +1,5 @@
 import math
+from collections import defaultdict
 
 import numpy as np
 from stl import mesh
@@ -6,15 +7,18 @@ from stl import mesh
 from circular import circular_array
 
 
+counts = defaultdict(int)
+
 def get_scale_at_edge(z, total_h):
+    # if z == 12:
+    #     return 0.8
+    # else:
+    #     return 1
+
     return 1 - 2.2 * math.pow(max(abs(z / total_h - 0.35), 0), 3) + 0.3
 
 
 def transform(x, y, z, h, total_h):
-    # if z % h < 0.0001:
-    #     scale = get_scale_at_edge(z, total_h)
-    #     return x * scale, y * scale, z
-
     prev_edge = math.floor(z / h) * h
     next_edge = prev_edge + h
 
@@ -33,4 +37,5 @@ def spherical_array(
         for j in range(3):
             transformed.extend(transform(f[j * 3], f[j * 3 + 1], f[j * 3 + 2], h, h * n_vertical))
         res.points[i] = np.array(transformed)
+
     return res
