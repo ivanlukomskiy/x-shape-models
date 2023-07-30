@@ -7,7 +7,7 @@ from stl import mesh
 from circular import circular_array
 
 
-counts = defaultdict(int)
+float_precision = 3
 
 def get_scale_at_edge(z, total_h):
     # if z == 12:
@@ -24,7 +24,13 @@ def transform(x, y, z, h, total_h):
 
     scale = (get_scale_at_edge(prev_edge, total_h) * (next_edge - z) / h +
              get_scale_at_edge(next_edge, total_h) * (z - prev_edge) / h)
-    return x * scale, y * scale, z
+
+    # rounding in needed to avoid non-manifold edges
+    return (
+        round(x * scale, float_precision),
+        round(y * scale, float_precision),
+        round(z, float_precision)
+    )
 
 
 def spherical_array(
