@@ -7,7 +7,7 @@ from x_shape import x_shape
 
 
 def get_fullness(angle, h_fraction):
-    return max(min(h_fraction, 1), 0)
+    return max(min(h_fraction * 1.15, 1), 0)
 
 
 def circular_array(
@@ -18,7 +18,6 @@ def circular_array(
     l_shape = 2 * r * math.sin(truncation_angle)
     center_distance = r * math.cos(truncation_angle)
     bricks = []
-    l = math.pi * 2 * r / 7
 
     for j in range(n_vertical):
         for i in range(n_horizontal):

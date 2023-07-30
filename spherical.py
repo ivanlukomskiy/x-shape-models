@@ -10,11 +10,6 @@ from circular import circular_array
 float_precision = 3
 
 def get_scale_at_edge(z, total_h):
-    # if z == 12:
-    #     return 0.8
-    # else:
-    #     return 1
-
     return 1 - 2.2 * math.pow(max(abs(z / total_h - 0.35), 0), 3) + 0.3
 
 

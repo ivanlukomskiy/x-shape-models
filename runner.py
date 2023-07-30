@@ -4,11 +4,11 @@ from circular import circular_array
 from spherical import spherical_array
 from spiral import spiral_array
 
-r = 30
+r = 90
 avg_l_step = 7
 n_horizontal = int(2 * math.pi * r / avg_l_step)
 segment_height = 12
-expected_height = 60
+expected_height = 210
 expected_length = 40
 frame_len = 6
 n_vertical = int((expected_height - frame_len * 2)/ segment_height)
