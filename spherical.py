@@ -7,7 +7,7 @@ from circular import circular_array
 
 
 def get_scale_at_edge(z, total_h):
-    return 1 - 2 * math.pow(max(abs(z / total_h - 0.5), 0), 3) + 0.3
+    return 1 - 2.2 * math.pow(max(abs(z / total_h - 0.35), 0), 3) + 0.3
 
 
 def transform(x, y, z, h, total_h):
