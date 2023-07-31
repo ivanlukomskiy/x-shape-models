@@ -1,11 +1,12 @@
 import math
 
-from src.mesh_utils import round_mesh_points, default_precision, radial_transform_mesh
+from src.mesh_utils import radial_transform_mesh
 from src.pattern_circular import circular_array
 
-
-def get_scale(z, total_h):
-    return 1 - 2.2 * math.pow(max(abs(z / total_h - 0.35), 0), 3) + 0.3
+warp_functions = {
+    'lamp': lambda z, total_h:  1 - 2.2 * math.pow(max(abs(z / total_h - 0.35), 0), 3) + 0.3,
+    'saddle': lambda z, total_h:  1 + 1.6 * math.pow(max(abs(z / total_h - 0.35), 0), 3) + 0.3,
+}
 
 
 def spherical_array(config):
@@ -15,4 +16,6 @@ def spherical_array(config):
     circular = circular_array(config)
 
     # bend cylinder by moving its points horizontally toward its axis
-    return radial_transform_mesh(circular, x_height, n_vertical, get_scale)
+    warp_function_name = config.get('warp_function', 'lamp')
+    warp_function = warp_functions[warp_function_name]
+    return radial_transform_mesh(circular, x_height, n_vertical, warp_function)

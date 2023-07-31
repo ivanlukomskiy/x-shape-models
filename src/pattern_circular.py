@@ -6,8 +6,21 @@ from src.mesh_utils import combine_meshes
 from src.x_shape import x_shape
 
 
-def get_fullness(angle, h_fraction):
+def linear_fullness(angle, h_fraction):
     return max(min(h_fraction * 1.15, 1), 0)
+
+def zeros_fullness(angle, h_fraction):
+    return 0
+
+def random_fullness(angle, h_fraction):
+    return (hash(angle) + hash(h_fraction)) / 10e+12 % 1
+
+
+def toy_fullness(angle, h_fraction):
+    print(h_fraction)
+    if h_fraction > 0.7:
+        return 0
+    return (math.sin(angle + h_fraction * math.pi / 2) + 1) / 4
 
 
 def circular_array(config):
@@ -21,6 +34,16 @@ def circular_array(config):
     contact_fraction_v = config['contact_fraction_v']
     frame_len = config['frame_len']
 
+    fullness_func_name = config.get('fullness_function', 'zeros')
+    if fullness_func_name == 'lamp':
+        fullness_func = linear_fullness
+    elif fullness_func_name == 'random':
+        fullness_func = random_fullness
+    elif fullness_func_name == 'toy':
+        fullness_func = toy_fullness
+    else:
+        fullness_func = zeros_fullness
+
     angle_step = 2 * math.pi / n_horizontal
     truncation_angle = angle_step / 2
     l_shape = 2 * radius * math.sin(truncation_angle)
@@ -30,10 +53,10 @@ def circular_array(config):
     for j in range(n_vertical):
         for i in range(n_horizontal):
             fullness = [
-                get_fullness(i * angle_step, (j + .5) / n_vertical),
-                get_fullness((i - 0.5) * angle_step, j / n_vertical),
-                get_fullness(i * angle_step, (j - .5) / n_vertical),
-                get_fullness((i + 0.5) * angle_step, j / n_vertical),
+                fullness_func(i * angle_step, (j + .5) / n_vertical),
+                fullness_func((i - 0.5) * angle_step, j / n_vertical),
+                fullness_func(i * angle_step, (j - .5) / n_vertical),
+                fullness_func((i + 0.5) * angle_step, j / n_vertical),
             ]
             frame_top = frame_len > 0 and j == n_vertical - 1
             frame_bottom = frame_len > 0 and j == 0
