@@ -9,15 +9,23 @@ from src.x_shape import x_shape
 def linear_fullness(angle, h_fraction):
     return max(min(h_fraction * 1.15, 1), 0)
 
+
 def zeros_fullness(angle, h_fraction):
     return 0
+
 
 def random_fullness(angle, h_fraction):
     return (hash(angle) + hash(h_fraction)) / 10e+12 % 1
 
 
-def toy_fullness(angle, h_fraction):
+def glass_fullness(angle, h_fraction):
+    if h_fraction > 0.87:
+        return .1
     print(h_fraction)
+    return 0
+
+
+def toy_fullness(angle, h_fraction):
     if h_fraction > 0.7:
         return 0
     return (math.sin(angle + h_fraction * math.pi / 2) + 1) / 4
@@ -32,7 +40,8 @@ def circular_array(config):
     thickness = config['thickness']
     contact_fraction_h = config['contact_fraction_h']
     contact_fraction_v = config['contact_fraction_v']
-    frame_len = config['frame_len']
+    frame_len_top = config.get('frame_len_top', config.get('frame_len'))
+    frame_len_bottom = config.get('frame_len_bottom', config.get('frame_len'))
 
     fullness_func_name = config.get('fullness_function', 'zeros')
     if fullness_func_name == 'lamp':
@@ -41,6 +50,8 @@ def circular_array(config):
         fullness_func = random_fullness
     elif fullness_func_name == 'toy':
         fullness_func = toy_fullness
+    elif fullness_func_name == 'glass':
+        fullness_func = glass_fullness
     else:
         fullness_func = zeros_fullness
 
@@ -58,10 +69,11 @@ def circular_array(config):
                 fullness_func(i * angle_step, (j - .5) / n_vertical),
                 fullness_func((i + 0.5) * angle_step, j / n_vertical),
             ]
-            frame_top = frame_len > 0 and j == n_vertical - 1
-            frame_bottom = frame_len > 0 and j == 0
-            cap_top = frame_len == 0 and j == n_vertical - 1
-            cap_bottom = frame_len == 0 and j == 0
+            frame_top = frame_len_top > 0 and j == n_vertical - 1
+            frame_bottom = frame_len_bottom > 0 and j == 0
+            cap_top = frame_len_top == 0 and j == n_vertical - 1
+            cap_bottom = frame_len_bottom == 0 and j == 0
+            bottom = config.get('bottom', False) and j == 0
 
             brick = x_shape(
                 l_shape, thickness, x_height,
@@ -70,10 +82,12 @@ def circular_array(config):
                 contact_fraction_h, contact_fraction_v,
                 frame_top=frame_top,
                 frame_bottom=frame_bottom,
-                frame_len=frame_len,
+                frame_len_bottom=frame_len_bottom,
+                frame_len_top=frame_len_top,
                 fullness=fullness,
                 top_cap=cap_top,
                 bottom_cap=cap_bottom,
+                bottom=bottom
             )
             brick.translate(np.array([0, center_distance, x_height * j]))
             brick.rotate(np.array([0, 0, 1]), angle_step * i)

@@ -15,7 +15,6 @@ def square(a, b, c, d, inverse=False):
 
 def triangle(a, b, c, inverse=False):
     if a == b or b == c or c == a:
-        print('skip')
         return []
     if inverse:
         return [

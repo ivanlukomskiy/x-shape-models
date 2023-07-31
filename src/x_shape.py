@@ -15,27 +15,31 @@ def x_shape(
         top_cap=False,
         frame_top=False,
         frame_bottom=False,
-        frame_len=0,
+        frame_len_top=0,
+        frame_len_bottom=0,
         left_cap=False,
         right_cap=False,
         fullness=None,
+        bottom=False,
 ):
     if fullness is None:
         fullness = [0, 0, 0, 0]
 
     # left bottom quarter
     mesh1 = _x_shape_quarter(l / 2, d, h / 2, truncation_angle_1, contact_fraction_h, contact_fraction_v,
-                             bottom_cap=bottom_cap, frame=frame_bottom, frame_len=frame_len, bottom_patch=frame_bottom,
+                             bottom_cap=bottom_cap, frame=frame_bottom, frame_len=frame_len_bottom,
+                             bottom_patch=frame_bottom,
                              side_cap=right_cap,
                              fullness_a=min(fullness[3] * 2, 1),
                              fullness_b=-max(fullness[2] * 2 - 1, 0),
                              a_cap=fullness[3] <= 0.5,
-                             b_cap=bottom_cap and fullness[2] > 0.5
+                             b_cap=bottom_cap and fullness[2] > 0.5,
+                             center_connection=bottom,
                              )
 
     # left top quarter
     mesh2 = _x_shape_quarter(l / 2, d, -h / 2, truncation_angle_1, contact_fraction_h, contact_fraction_v,
-                             bottom_cap=top_cap, frame=frame_top, frame_len=-frame_len, bottom_patch=frame_top,
+                             bottom_cap=top_cap, frame=frame_top, frame_len=-frame_len_top, bottom_patch=frame_top,
                              side_cap=right_cap,
                              fullness_a=-max(fullness[3] * 2 - 1, 0),
                              fullness_b=min(fullness[0] * 2, 1),
@@ -45,17 +49,19 @@ def x_shape(
 
     # right bottom quarter
     mesh3 = _x_shape_quarter(-l / 2, d, h / 2, truncation_angle_2, contact_fraction_h, contact_fraction_v,
-                             bottom_cap=bottom_cap, frame=frame_bottom, frame_len=frame_len, bottom_patch=frame_bottom,
+                             bottom_cap=bottom_cap, frame=frame_bottom, frame_len=frame_len_bottom,
+                             bottom_patch=frame_bottom,
                              side_cap=left_cap,
                              fullness_a=min(fullness[1] * 2, 1),
                              fullness_b=-max(fullness[2] * 2 - 1, 0),
                              a_cap=fullness[1] <= 0.5,
-                             b_cap=bottom_cap  and fullness[2] > 0.5
+                             b_cap=bottom_cap and fullness[2] > 0.5,
+                             center_connection=bottom,
                              )
 
     # right top quarter
     mesh4 = _x_shape_quarter(-l / 2, d, -h / 2, truncation_angle_2, contact_fraction_h, contact_fraction_v,
-                             bottom_cap=top_cap, frame=frame_top, frame_len=-frame_len, bottom_patch=frame_top,
+                             bottom_cap=top_cap, frame=frame_top, frame_len=-frame_len_top, bottom_patch=frame_top,
                              side_cap=left_cap,
                              fullness_a=-max(fullness[1] * 2 - 1, 0),
                              fullness_b=min(fullness[0] * 2, 1),
@@ -79,6 +85,7 @@ def _x_shape_quarter(
         side_cap=False,
         frame=False,
         frame_len=0,
+        center_connection=False,
 ):
     delta_x = math.tan(truncation_angle) * d / 2
     contact_h = contact_fraction_h * l
@@ -129,6 +136,9 @@ def _x_shape_quarter(
         [0, -0.5 * d, h_b],  # 25
         [0, 0.5 * d, h_b],  # 26
         [(l - delta_x - contact_h) * shift_b, 0.5 * d, h_b],  # 27
+
+        [0, -l / math.tan(truncation_angle), 0],  # 28
+        [0, -l / math.tan(truncation_angle), -frame_len],  # 29
     ])
     inverse = h * l * d < 0
     faces = [
@@ -172,8 +182,6 @@ def _x_shape_quarter(
     else:
         if b_cap and fullness_b < 0:
             faces.extend(square(10, 11, 15, 14, inverse))
-        # if fullness_b < 1:
-        #     faces.extend(square(24, 27, 11, 10, inverse))
         faces.extend(square(1, 5, 27, 24, inverse))
         faces.extend(square(27, 26, 25, 24, inverse))
         faces.extend(square(27, 11, 15, 26, inverse))
@@ -197,10 +205,17 @@ def _x_shape_quarter(
         faces.extend(square(10, 11, 15, 14, inverse))
 
     if frame:
-        faces.extend(square(0, 10, 17, 16, inverse))
-        faces.extend(triangle(10, 14, 17, inverse))
+        if center_connection:
+            faces.extend(triangle(0, 10, 28, inverse))
+            faces.extend(triangle(10, 14, 28, inverse))
+            faces.extend(triangle(17, 16, 29, inverse))
+        else:
+            faces.extend(square(0, 10, 17, 16, inverse))
+            faces.extend(triangle(10, 14, 17, inverse))
+
         faces.extend(square(15, 11, 19, 18, inverse))
         faces.extend(triangle(11, 9, 19, inverse))
+
         faces.extend(square(16, 17, 18, 19, inverse))
 
     return build_mesh(faces, vertices)

@@ -6,6 +6,7 @@ from src.pattern_circular import circular_array
 warp_functions = {
     'lamp': lambda z, total_h:  1 - 2.2 * math.pow(max(abs(z / total_h - 0.35), 0), 3) + 0.3,
     'saddle': lambda z, total_h:  1 + 1.6 * math.pow(max(abs(z / total_h - 0.35), 0), 3) + 0.3,
+    'glass': lambda z, total_h:  1 + z/total_h * 0.2,
 }
 
 
