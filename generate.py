@@ -3,6 +3,7 @@ import os.path
 import yaml
 import argparse
 
+from src.mesh_utils import round_mesh_points, default_precision
 from src.pattern_circular import circular_array
 from src.pattern_spherical import spherical_array
 from src.pattern_spiral import spiral_array
@@ -24,6 +25,8 @@ if __name__ == '__main__':
             res = spiral_array(config)
         else:
             raise RuntimeError('Unsupported pattern ' + config['pattern'])
+
+        res = round_mesh_points(res, default_precision)
 
         res.save(f'{args.config}.stl')
 

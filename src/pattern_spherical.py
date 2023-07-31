@@ -15,7 +15,4 @@ def spherical_array(config):
     circular = circular_array(config)
 
     # bend cylinder by moving its points horizontally toward its axis
-    res = radial_transform_mesh(circular, x_height, n_vertical, get_scale)
-
-    res = round_mesh_points(res, default_precision)
-    return res
+    return radial_transform_mesh(circular, x_height, n_vertical, get_scale)

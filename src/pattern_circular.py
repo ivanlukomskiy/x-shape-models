@@ -10,10 +10,7 @@ def get_fullness(angle, h_fraction):
     return max(min(h_fraction * 1.15, 1), 0)
 
 
-def circular_array(
-        config
-        # r, d, h, n_horizontal, n_vertical, contact_fraction_h, contact_fraction_v, frame_len
-):
+def circular_array(config):
     radius = config['radius']
     x_width = config['x_width']
     n_horizontal = round(math.pi * 2 * radius / x_width)

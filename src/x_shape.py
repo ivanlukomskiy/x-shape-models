@@ -29,7 +29,9 @@ def x_shape(
                              side_cap=right_cap,
                              fullness_a=min(fullness[3] * 2, 1),
                              fullness_b=-max(fullness[2] * 2 - 1, 0),
-                             a_cap=fullness[3] <= 0.5,)
+                             a_cap=fullness[3] <= 0.5,
+                             b_cap=bottom_cap and fullness[2] > 0.5
+                             )
 
     # left top quarter
     mesh2 = _x_shape_quarter(l / 2, d, -h / 2, truncation_angle_1, contact_fraction_h, contact_fraction_v,
@@ -37,7 +39,8 @@ def x_shape(
                              side_cap=right_cap,
                              fullness_a=-max(fullness[3] * 2 - 1, 0),
                              fullness_b=min(fullness[0] * 2, 1),
-                             b_cap=fullness[0] <= 0.5)
+                             b_cap=fullness[0] <= 0.5 or top_cap and fullness[0] > 0.5
+                             )
     mesh2.translate(np.array([0, 0, h]))
 
     # right bottom quarter
@@ -46,7 +49,9 @@ def x_shape(
                              side_cap=left_cap,
                              fullness_a=min(fullness[1] * 2, 1),
                              fullness_b=-max(fullness[2] * 2 - 1, 0),
-                             a_cap=fullness[1] <= 0.5)
+                             a_cap=fullness[1] <= 0.5,
+                             b_cap=bottom_cap  and fullness[2] > 0.5
+                             )
 
     # right top quarter
     mesh4 = _x_shape_quarter(-l / 2, d, -h / 2, truncation_angle_2, contact_fraction_h, contact_fraction_v,
@@ -54,7 +59,7 @@ def x_shape(
                              side_cap=left_cap,
                              fullness_a=-max(fullness[1] * 2 - 1, 0),
                              fullness_b=min(fullness[0] * 2, 1),
-                             b_cap=fullness[0] <= 0.5)
+                             b_cap=fullness[0] <= 0.5 or top_cap and fullness[0] > 0.5)
     mesh4.translate(np.array([0, 0, h]))
 
     return combine_meshes(mesh1, mesh2, mesh3, mesh4)
@@ -165,6 +170,10 @@ def _x_shape_quarter(
         faces.extend(triangle(5, 27, 26, inverse))
         faces.extend(triangle(1, 25, 24, inverse))
     else:
+        if b_cap and fullness_b < 0:
+            faces.extend(square(10, 11, 15, 14, inverse))
+        # if fullness_b < 1:
+        #     faces.extend(square(24, 27, 11, 10, inverse))
         faces.extend(square(1, 5, 27, 24, inverse))
         faces.extend(square(27, 26, 25, 24, inverse))
         faces.extend(square(27, 11, 15, 26, inverse))
