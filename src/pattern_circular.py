@@ -38,15 +38,22 @@ def circular_array(
                 get_fullness(i * angle_step, (j - .5) / n_vertical),
                 get_fullness((i + 0.5) * angle_step, j / n_vertical),
             ]
+            frame_top = frame_len > 0 and j == n_vertical - 1
+            frame_bottom = frame_len > 0 and j == 0
+            cap_top = frame_len == 0 and j == n_vertical - 1
+            cap_bottom = frame_len == 0 and j == 0
+
             brick = x_shape(
                 l_shape, thickness, x_height,
                 truncation_angle,
                 -truncation_angle,
                 contact_fraction_h, contact_fraction_v,
-                frame_top=j == n_vertical - 1,
-                frame_bottom=j == 0,
+                frame_top=frame_top,
+                frame_bottom=frame_bottom,
                 frame_len=frame_len,
-                fullness=fullness
+                fullness=fullness,
+                top_cap=cap_top,
+                bottom_cap=cap_bottom,
             )
             brick.translate(np.array([0, center_distance, x_height * j]))
             brick.rotate(np.array([0, 0, 1]), angle_step * i)

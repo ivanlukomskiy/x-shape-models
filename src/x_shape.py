@@ -167,7 +167,6 @@ def _x_shape_quarter(
     else:
         faces.extend(square(1, 5, 27, 24, inverse))
         faces.extend(square(27, 26, 25, 24, inverse))
-        # sides
         faces.extend(square(27, 11, 15, 26, inverse))
         faces.extend(square(25, 14, 10, 24, inverse))
 

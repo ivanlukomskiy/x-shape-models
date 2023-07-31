@@ -1,0 +1,9 @@
+pattern: circular
+radius: 10
+height: 21
+thickness: 4
+x_height: 7
+x_width: 7
+contact_fraction_h: 0.3
+contact_fraction_v: 0.3
+frame_len: 0

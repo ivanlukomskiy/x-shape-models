@@ -28,7 +28,6 @@ def spiral_array(config):
     step_angle = x_width / r0
     n_vertical = round(height / x_height)
     x_height = height / n_vertical
-    print(x_height, x_width, n_vertical * x_height)
 
     current_angle = 0
     current_length = 0
