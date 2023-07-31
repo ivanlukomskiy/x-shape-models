@@ -26,8 +26,9 @@ def spiral_array(config):
     frame_len = config['frame_len']
 
     step_angle = x_width / r0
-    n_vertical = round(height / x_height)
-    x_height = height / n_vertical
+    height_without_frame = height - frame_len * 2
+    n_vertical = round(height_without_frame / x_height)
+    x_height = height_without_frame / n_vertical
 
     current_angle = 0
     current_length = 0

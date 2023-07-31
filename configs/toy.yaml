@@ -1,11 +1,10 @@
-pattern: spherical
+pattern: circular
 radius: 15
-height: 28
-thickness: 14
+height: 18
+thickness: 10
 x_height: 18
 x_width: 10
 contact_fraction_h: 0.3
 contact_fraction_v: 0.3
 frame_len: 0
-fullness_function: toy
-warp_function: saddle
+fullness_function: zeros

@@ -137,8 +137,8 @@ def _x_shape_quarter(
         [0, 0.5 * d, h_b],  # 26
         [(l - delta_x - contact_h) * shift_b, 0.5 * d, h_b],  # 27
 
-        [0, -l / math.tan(truncation_angle), 0],  # 28
-        [0, -l / math.tan(truncation_angle), -frame_len],  # 29
+        [0, -l / math.tan(truncation_angle) if truncation_angle != 0 else 0, 0],  # 28
+        [0, -l / math.tan(truncation_angle) if truncation_angle != 0 else 0, -frame_len],  # 29
     ])
     inverse = h * l * d < 0
     faces = [
