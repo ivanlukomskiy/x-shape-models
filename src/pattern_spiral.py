@@ -88,18 +88,23 @@ def spiral_array(config):
                 1 if j == 0 else 0,
                 0
             ]
-
+            frame_top = frame_len > 0 and j == n_vertical - 1
+            frame_bottom = frame_len > 0 and j == 0
+            cap_top = frame_len == 0 and j == n_vertical - 1
+            cap_bottom = frame_len == 0 and j == 0
             brick = x_shape(
                 length, d, x_height,
                 truncate_angle_1,
                 truncate_angle_2,
                 contact_fraction_h, contact_fraction_v,
-                frame_top=j == n_vertical - 1,
-                frame_bottom=j == 0,
+                frame_top=frame_top,
+                frame_bottom=frame_bottom,
                 frame_len=frame_len,
+                top_cap=cap_top,
+                bottom_cap=cap_bottom,
                 left_cap=i == 0,
                 right_cap=i == segments_count - 1,
-                fullness=fullness
+                fullness=fullness,
             )
             brick.rotate(np.array([0, 0, 1]), norm_angle)
             brick.translate(np.array([x_mid, y_mid, x_height * j * 1.]))

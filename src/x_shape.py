@@ -193,7 +193,7 @@ def _x_shape_quarter(
     if bottom_cap:
         faces.extend(square(0, 10, 11, 9, inverse))
 
-    if bottom_patch and fullness_b < 1:
+    if bottom_patch and 1 > fullness_b >= 0:
         faces.extend(square(10, 11, 15, 14, inverse))
 
     if frame:

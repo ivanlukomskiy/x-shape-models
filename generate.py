@@ -26,7 +26,7 @@ if __name__ == '__main__':
         else:
             raise RuntimeError('Unsupported pattern ' + config['pattern'])
 
-        res = round_mesh_points(res, default_precision)
+        res = round_mesh_points(res, config.get('precision', 3))
 
         res.save(f'{args.config}.stl')
 

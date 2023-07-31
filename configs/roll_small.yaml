@@ -1,12 +1,12 @@
 pattern: spiral
-spiral_initial_radius: 90
+spiral_initial_radius: 30
 spiral_layers_gap: 0.45
-height: 250
-spiral_length: 2010
+height: 14
+spiral_length: 100
 
 thickness: 0.45
 x_height: 7
 x_width: 4
 contact_fraction_h: 0.3
 contact_fraction_v: 0.3
-frame_len: 6
+frame_len: 3
