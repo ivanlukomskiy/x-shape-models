@@ -1,0 +1,13 @@
+pattern: spherical
+radius: 22
+height: 65
+thickness: 1.5
+x_height: 22
+x_width: 4
+contact_fraction_h: 0.3
+contact_fraction_v: 0.3
+frame_len_top: 0
+frame_len_bottom: 2
+fullness_function: linear_fullness
+warp_function: bowl
+bottom: true

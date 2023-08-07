@@ -1,0 +1,12 @@
+pattern: circular
+radius: 32.5
+height: 75
+thickness: 3
+x_height: 20
+x_width: 20
+contact_fraction_h: 0.15
+contact_fraction_v: 0.15
+frame_len_top: 2
+frame_len: 14
+bottom: true
+fullness_function: by_the_frame

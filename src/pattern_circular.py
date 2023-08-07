@@ -7,7 +7,7 @@ from src.x_shape import x_shape
 
 
 def linear_fullness(angle, h_fraction):
-    return max(min(h_fraction * 1.15, 1), 0)
+    return max(min(1-h_fraction - 0.3, 1), 0)
 
 
 def zeros_fullness(angle, h_fraction):
@@ -21,7 +21,6 @@ def random_fullness(angle, h_fraction):
 def glass_fullness(angle, h_fraction):
     if h_fraction > 0.87:
         return .1
-    print(h_fraction)
     return 0
 
 
@@ -29,6 +28,11 @@ def toy_fullness(angle, h_fraction):
     if h_fraction > 0.7:
         return 0
     return (math.sin(angle + h_fraction * math.pi / 2) + 1) / 4
+
+def by_the_frame_fullness(angle, h_fraction):
+    if h_fraction == 1:
+        return 1
+    return 0
 
 
 def circular_array(config):
@@ -52,6 +56,10 @@ def circular_array(config):
         fullness_func = toy_fullness
     elif fullness_func_name == 'glass':
         fullness_func = glass_fullness
+    elif fullness_func_name == 'linear_fullness':
+        fullness_func = linear_fullness
+    elif fullness_func_name == 'by_the_frame':
+        fullness_func = by_the_frame_fullness
     else:
         fullness_func = zeros_fullness
 
@@ -64,10 +72,10 @@ def circular_array(config):
     for j in range(n_vertical):
         for i in range(n_horizontal):
             fullness = [
-                fullness_func(i * angle_step, (j + .5) / n_vertical),
-                fullness_func((i - 0.5) * angle_step, j / n_vertical),
-                fullness_func(i * angle_step, (j - .5) / n_vertical),
-                fullness_func((i + 0.5) * angle_step, j / n_vertical),
+                fullness_func(i * angle_step, (j + 1) / n_vertical),
+                fullness_func((i - 0.5) * angle_step, (j+0.5) / n_vertical),
+                fullness_func(i * angle_step, j / n_vertical),
+                fullness_func((i + 0.5) * angle_step, (j+0.5) / n_vertical),
             ]
             frame_top = frame_len_top > 0 and j == n_vertical - 1
             frame_bottom = frame_len_bottom > 0 and j == 0
