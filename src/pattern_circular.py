@@ -35,6 +35,10 @@ def by_the_frame_fullness(angle, h_fraction):
     return 0
 
 
+def screw_function(h_fraction):
+    return h_fraction
+
+
 def circular_array(config):
     radius = config['radius']
     x_width = config['x_width']
