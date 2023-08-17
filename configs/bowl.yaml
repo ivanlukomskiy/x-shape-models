@@ -8,6 +8,6 @@ contact_fraction_h: 0.3
 contact_fraction_v: 0.3
 frame_len_top: 0
 frame_len_bottom: 2
-fullness_function: linear_fullness
+fullness_function: linear
 warp_function: bowl
 bottom: true

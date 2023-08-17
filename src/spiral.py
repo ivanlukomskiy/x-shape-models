@@ -13,7 +13,7 @@ def get_spiral_point(r0, a, angle):
     )
 
 
-def spiral_array(config):
+def spiral_shape(config):
     r0 = config['spiral_initial_radius']
     a = config['spiral_layers_gap']
     d = config['thickness']

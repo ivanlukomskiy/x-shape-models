@@ -1,7 +1,7 @@
 import math
 
 from src.mesh_utils import radial_transform_mesh
-from src.pattern_circular import circular_array
+from src.circular import circular_shape
 
 warp_functions = {
     'lamp': lambda z, total_h:  1 - 2.2 * math.pow(max(abs(z / total_h - 0.35), 0), 3) + 0.3,
@@ -17,11 +17,11 @@ screw_functions = {
 }
 
 
-def spherical_array(config):
+def warped_shape(config):
     x_height = config['x_height']
     n_vertical = round(config['height'] / x_height)
 
-    circular = circular_array(config)
+    circular = circular_shape(config)
 
     # bend cylinder by moving its points horizontally toward its axis
     warp_function_name = config.get('warp_function', 'lamp')
