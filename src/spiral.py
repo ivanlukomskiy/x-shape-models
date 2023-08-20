@@ -2,8 +2,8 @@ import math
 
 import numpy as np
 
-from src.mesh_utils import combine_meshes
-from src.x_shape import x_shape
+from src.mesh_utils import join_meshes
+from src.x_shape import create_x_shape
 
 
 def get_spiral_point(r0, a, angle):
@@ -93,7 +93,7 @@ def spiral_shape(config):
             frame_bottom = frame_len > 0 and j == 0
             cap_top = frame_len == 0 and j == n_vertical - 1
             cap_bottom = frame_len == 0 and j == 0
-            brick = x_shape(
+            brick = create_x_shape(
                 length, d, x_height,
                 truncate_angle_1,
                 truncate_angle_2,
@@ -114,4 +114,4 @@ def spiral_shape(config):
 
             x_prev, y_prev, r_prev = x1, y1, r1
 
-    return combine_meshes(*bricks)
+    return join_meshes(*bricks)

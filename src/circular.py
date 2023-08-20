@@ -2,8 +2,8 @@ import math
 
 import numpy as np
 
-from src.mesh_utils import combine_meshes
-from src.x_shape import x_shape
+from src.mesh_utils import join_meshes
+from src.x_shape import create_x_shape
 
 
 fullness_functions = {
@@ -53,7 +53,7 @@ def circular_shape(config):
             cap_bottom = frame_len_bottom == 0 and j == 0
             bottom = config.get('bottom', False) and j == 0
 
-            brick = x_shape(
+            brick = create_x_shape(
                 l_shape, thickness, x_height,
                 truncation_angle,
                 -truncation_angle,
@@ -71,4 +71,4 @@ def circular_shape(config):
             brick.rotate(np.array([0, 0, 1]), angle_step * i)
             bricks.append(brick)
 
-    return combine_meshes(*bricks)
+    return join_meshes(*bricks)

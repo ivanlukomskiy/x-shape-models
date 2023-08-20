@@ -2,10 +2,10 @@ import math
 
 import numpy as np
 
-from src.mesh_utils import square, triangle, build_mesh, combine_meshes
+from src.mesh_utils import square, triangle, build_mesh, join_meshes
 
 
-def x_shape(
+def create_x_shape(
         l, d, h,
         truncation_angle_1,
         truncation_angle_2,
@@ -68,7 +68,7 @@ def x_shape(
                              b_cap=fullness[0] <= 0.5 or top_cap and fullness[0] > 0.5)
     mesh4.translate(np.array([0, 0, h]))
 
-    return combine_meshes(mesh1, mesh2, mesh3, mesh4)
+    return join_meshes(mesh1, mesh2, mesh3, mesh4)
 
 
 def _x_shape_quarter(
