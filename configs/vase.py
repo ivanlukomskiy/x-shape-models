@@ -2,7 +2,7 @@ import math
 
 from src.config import CircularShapeConfig
 from src.mesh_utils import snap_transform_to_layers, to_cylindrical_coords, \
-    from_cylindrical_coords, apply_transform
+    from_cylindrical_coords, apply_transform, round_mesh_points
 from src.shape_circular import generate_cylindrical_shape
 
 config = CircularShapeConfig()
@@ -28,22 +28,5 @@ def warp_vase_transform(x, y, z):
 transform = warp_vase_transform
 transform = snap_transform_to_layers(config, transform)
 shape = apply_transform(shape, transform)
-
+shape = round_mesh_points(shape, 3)
 shape.save('vase.stl')
-
-'''
-pattern: spherical
-radius: 50
-height: 190
-thickness: 18
-x_height: 50
-x_width: 40
-contact_fraction_h: 0.3
-contact_fraction_v: 0.3
-frame_len_top: 0
-frame_len_bottom: 2
-fullness_function: glass
-warp_function: vase
-bottom: true
-screw_function: vase
-'''

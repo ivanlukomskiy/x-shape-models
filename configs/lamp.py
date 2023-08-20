@@ -2,7 +2,7 @@ import math
 
 from src.config import CircularShapeConfig
 from src.mesh_utils import snap_transform_to_layers, to_cylindrical_coords, \
-    from_cylindrical_coords, apply_transform
+    from_cylindrical_coords, apply_transform, round_mesh_points
 from src.shape_circular import generate_cylindrical_shape
 
 config = CircularShapeConfig()
@@ -28,5 +28,5 @@ def warp_lamp_transform(x, y, z):
 transform = warp_lamp_transform
 transform = snap_transform_to_layers(config, transform)
 shape = apply_transform(shape, transform)
-
+shape = round_mesh_points(shape, 3)
 shape.save('lamp.stl')

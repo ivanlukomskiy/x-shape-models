@@ -54,3 +54,6 @@ class SpiralShapeConfig(BaseConfig):
     def get_point(self, angle):
         radius = self.get_radius(angle)
         return radius * math.cos(angle), radius * math.sin(angle)
+
+    def get_center_angle(self, current_angle):  # good enough approximation
+        return self.base_cell_width / self.get_radius(current_angle)

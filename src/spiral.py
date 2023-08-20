@@ -8,8 +8,6 @@ from src.x_shape import create_x_shape
 
 
 def generate_spiral_shape(config: SpiralShapeConfig):
-    step_angle = config.base_cell_width / config.radius
-
     current_angle = 0
     current_length = 0
     r_prev = config.radius
@@ -22,6 +20,7 @@ def generate_spiral_shape(config: SpiralShapeConfig):
 
     segments_count = 0
     while current_length < config.length:
+        step_angle = config.get_center_angle(current_angle)
         segments_count += 1
         current_angle += step_angle
         x1, y1 = config.get_point(current_angle)
@@ -56,6 +55,7 @@ def generate_spiral_shape(config: SpiralShapeConfig):
         current_length = 0
         x_prev, y_prev = config.get_point(current_angle)
         for i in range(segments_count):
+            step_angle = config.get_center_angle(current_angle)
             current_angle += step_angle
             x1, y1 = config.get_point(current_angle)
             r1 = config.get_radius(current_angle)
@@ -76,12 +76,6 @@ def generate_spiral_shape(config: SpiralShapeConfig):
                 config.cell_fullness_function(current_angle - step_angle / 2, (layer + .5) / config.layers_count),
             ]
 
-            fullness = [
-                1 if layer == config.layers_count - 1 else 0,
-                0,
-                1 if layer == 0 else 0,
-                0
-            ]
             frame_top = config.frame_len_top > 0 and layer == config.layers_count - 1
             frame_bottom = config.frame_len_bottom > 0 and layer == 0
             cap_top = config.frame_len_top == 0 and layer == config.layers_count - 1
