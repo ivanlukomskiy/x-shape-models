@@ -77,9 +77,21 @@ def radial_transform_mesh(mesh_, h, n_vertical, radial_multiplier_func, screw_fu
 
 def snap_transform_to_layers(config: BaseConfig, transform):
     def translate_point(x, y, z):
-        prev_layer = math.floor((z - config.frame_len_bottom) / config.base_cell_height) * config.base_cell_height
-        next_layer = prev_layer + config.base_cell_height
-        return transform(x, y, prev_layer) * (z - prev_layer) + transform(x, y, next_layer) * (next_layer - z)
+        prev_layer_index = math.floor((z - config.frame_len_bottom) / config.cell_height)
+        prev_layer_z = prev_layer_index * config.cell_height + config.frame_len_bottom
+        next_layer_z = prev_layer_z + config.cell_height
+
+        x_prev, y_prev, z_prev = transform(x, y, prev_layer_z)
+        x_next, y_next, z_next = transform(x, y, next_layer_z)
+
+        next_fraction = (z - prev_layer_z) / config.cell_height
+        prev_fraction = (next_layer_z - z) / config.cell_height
+
+        return (
+            x_prev * prev_fraction + x_next * next_fraction,
+            y_prev * prev_fraction + y_next * next_fraction,
+            z,
+        )
 
     return translate_point
 

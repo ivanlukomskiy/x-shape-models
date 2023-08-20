@@ -7,7 +7,7 @@ from src.mesh_utils import join_meshes
 from src.x_shape import create_x_shape
 
 
-def generate_circular_shape(config: CircularShapeConfig):
+def generate_cylindrical_shape(config: CircularShapeConfig):
     truncation_angle = config.cell_center_angle / 2
     x_shape_width = 2 * config.radius * math.sin(truncation_angle)
     center_distance = config.radius * math.cos(truncation_angle)
