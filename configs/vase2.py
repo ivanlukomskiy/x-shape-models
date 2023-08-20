@@ -9,8 +9,8 @@ config = CircularShapeConfig()
 config.radius = 50
 config.height = 200
 config.thickness = 18
-config.base_cell_height = 10
-config.base_cell_width = 7
+config.base_cell_height = 14
+config.base_cell_width = 9
 config.frame_len_bottom = 3
 config.bottom = True
 config.cell_fullness_function = lambda angle, h_fraction: 0.1 if h_fraction == 1 else 0
