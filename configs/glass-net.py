@@ -3,7 +3,7 @@ from src.mesh_utils import round_mesh_points
 from src.shape_circular import generate_cylindrical_shape
 
 config = CircularShapeConfig()
-config.radius = 32.5
+config.radius = 30
 config.height = 91
 config.thickness = 12
 config.base_cell_height = 5
