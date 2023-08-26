@@ -61,7 +61,7 @@ class GrooveConfig:
     def segment_center_angle(self):
         return 2 * math.pi / self.layer_segments_count
 
-
+      
 class SpiralShapeConfig(BaseConfig):
     roll_layers_gap = 3
     length = 100

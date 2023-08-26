@@ -31,6 +31,7 @@ def generate_cylindrical_shape(config: CircularShapeConfig):
             cap_top = config.frame_len_top == 0 and layer == config.layers_count - 1 and not config.open_top
             cap_bottom = config.frame_len_bottom == 0 and layer == 0 and not config.open_bottom
 
+
             x_shape = create_x_shape(
                 x_shape_width,
                 config.thickness,
@@ -55,3 +56,4 @@ def generate_cylindrical_shape(config: CircularShapeConfig):
     joint_mesh = join_meshes(*x_shapes)
     joint_mesh.translate(np.array([0, 0, config.frame_len_bottom]))
     return joint_mesh
+
