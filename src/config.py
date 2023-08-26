@@ -30,6 +30,8 @@ class BaseConfig:
 
 class CircularShapeConfig(BaseConfig):
     bottom = False
+    open_top = False
+    open_bottom = False
 
     @property
     def layer_cells_count(self):
@@ -40,6 +42,26 @@ class CircularShapeConfig(BaseConfig):
         return 2 * math.pi / self.layer_cells_count
 
 
+class GrooveConfig:
+    ring_height = 2
+    chamfer1_height = 2
+    chamfer2_height = 2
+    ring_delta_radius = 3
+    groove_delta_radius = -3
+    radius = 22
+    height = 20
+    thickness = 15
+    base_cell_width = 4
+
+    @property
+    def layer_segments_count(self):
+        return round(math.pi * 2 * self.radius / self.base_cell_width)
+
+    @property
+    def segment_center_angle(self):
+        return 2 * math.pi / self.layer_segments_count
+
+      
 class SpiralShapeConfig(BaseConfig):
     roll_layers_gap = 3
     length = 100

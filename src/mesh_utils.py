@@ -90,7 +90,7 @@ def snap_transform_to_layers(config: BaseConfig, transform):
         return (
             x_prev * prev_fraction + x_next * next_fraction,
             y_prev * prev_fraction + y_next * next_fraction,
-            z,
+            z_prev * prev_fraction + z_next * next_fraction,
         )
 
     return translate_point

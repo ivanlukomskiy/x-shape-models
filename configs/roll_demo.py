@@ -1,6 +1,6 @@
 from src.config import SpiralShapeConfig
 from src.mesh_utils import round_mesh_points
-from src.spiral import generate_spiral_shape
+from src.shape_spiral import generate_spiral_shape
 
 config = SpiralShapeConfig()
 config.radius = 25
