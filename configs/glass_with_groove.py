@@ -9,8 +9,8 @@ radius = 30
 thickness = 12
 base_cell_height = 5
 base_cell_width = 5
-total_height = 91
-groove_height = 55
+total_height = 105
+groove_height = 65
 
 # 72 => 60 => 30
 
@@ -33,7 +33,7 @@ groove_config.chamfer2_height = 2
 groove_config.ring_delta_radius = .5
 groove_config.groove_delta_radius = -1
 groove_config.radius = radius
-groove_config.height = 20
+groove_config.height = 25
 groove_config.thickness = thickness
 groove_config.base_cell_width = base_cell_width
 groove_shape = generate_groove(groove_config)
