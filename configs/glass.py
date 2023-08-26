@@ -4,11 +4,11 @@ from src.mesh_utils import snap_transform_to_layers, to_cylindrical_coords, \
 from src.shape_circular import generate_cylindrical_shape
 
 config = CircularShapeConfig()
-config.radius = 50
-config.height = 140
+config.radius = 45
+config.height = 137
 config.thickness = 18
 config.base_cell_height = 50
-config.base_cell_width = 40
+config.base_cell_width = 34
 config.frame_len_bottom = 2
 config.bottom = True
 shape = generate_cylindrical_shape(config)
