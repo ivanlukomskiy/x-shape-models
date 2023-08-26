@@ -14,7 +14,13 @@ config.base_cell_width = 7
 config.frame_len_bottom = 6
 config.frame_len_top = 6
 config.bottom = True
-config.cell_fullness_function = lambda angle, h_fraction: max(min(h_fraction, 1), 0)
+
+
+def fullness(angle, h_fraction):
+    return max(min((h_fraction - config.frame_len_bottom / config.height) * 1.1, 1), 0)
+
+
+config.cell_fullness_function = fullness
 
 shape = generate_cylindrical_shape(config)
 
