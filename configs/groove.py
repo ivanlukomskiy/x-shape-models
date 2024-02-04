@@ -1,9 +1,10 @@
 import math
+import os
 
 from src.groove import create_groove_segment
-from src.mesh_utils import round_mesh_points
+from src.mesh_utils import round_mesh_points, save_stl
 
-groove = create_groove_segment(30, 10, 40, 3, 1, 1, 4, -5, math.pi / 4, 0)
+shape = create_groove_segment(30, 10, 40, 3, 1, 1, 4, -5, math.pi / 4, 0)
 
-groove = round_mesh_points(groove, 3)
-groove.save('groove.stl')
+shape = round_mesh_points(shape, 3)
+save_stl(shape, os.path.splitext(os.path.basename(__file__))[0])

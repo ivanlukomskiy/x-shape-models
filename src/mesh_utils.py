@@ -125,3 +125,8 @@ def apply_transform(_mesh, transform):
             transformed.extend(transform(f[j * 3], f[j * 3 + 1], f[j * 3 + 2]))
         res.points[i] = np.array(transformed)
     return res
+
+def save_stl(_mesh, name):
+    filename = name + '.stl'
+    _mesh.save(filename)
+    print('STL generated successfully: ' + filename)

@@ -1,8 +1,10 @@
+import os
+
 import numpy as np
 
 from src.config import CircularShapeConfig, GrooveConfig
 from src.groove import generate_groove
-from src.mesh_utils import round_mesh_points, join_meshes
+from src.mesh_utils import round_mesh_points, join_meshes, save_stl
 from src.shape_circular import generate_cylindrical_shape
 
 radius = 30
@@ -53,4 +55,4 @@ top_part.translate(np.array([0, 0, bottom_part_config.height + groove_config.hei
 
 glass = join_meshes(bottom_part, top_part, groove_shape)
 glass = round_mesh_points(glass, 3)
-glass.save('glass-with-groove.stl')
+save_stl(glass, os.path.splitext(os.path.basename(__file__))[0])

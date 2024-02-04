@@ -1,8 +1,9 @@
 import math
+import os
 
 from src.config import CircularShapeConfig
 from src.mesh_utils import snap_transform_to_layers, to_cylindrical_coords, \
-    from_cylindrical_coords, apply_transform, round_mesh_points
+    from_cylindrical_coords, apply_transform, round_mesh_points, save_stl
 from src.shape_circular import generate_cylindrical_shape
 
 config = CircularShapeConfig()
@@ -14,6 +15,7 @@ config.base_cell_width = 7
 config.frame_len_bottom = 6
 config.frame_len_top = 6
 config.bottom = True
+
 
 def fullness(angle, h_fraction):
     return max(min((h_fraction - config.frame_len_bottom / config.height) * 1.1, 1), 0)
@@ -34,4 +36,4 @@ transform = warp_lamp_transform
 transform = snap_transform_to_layers(config, transform)
 shape = apply_transform(shape, transform)
 shape = round_mesh_points(shape, 3)
-shape.save('lamp.stl')
+save_stl(shape, os.path.splitext(os.path.basename(__file__))[0])

@@ -1,5 +1,7 @@
+import os
+
 from src.config import SpiralShapeConfig
-from src.mesh_utils import round_mesh_points
+from src.mesh_utils import round_mesh_points, save_stl
 from src.shape_spiral import generate_spiral_shape
 
 config = SpiralShapeConfig()
@@ -16,4 +18,4 @@ config.cell_fullness_function = lambda angle, h_fraction: 1 if h_fraction == 1 o
 
 shape = generate_spiral_shape(config)
 shape = round_mesh_points(shape, 3)
-shape.save('roll_demo.stl')
+save_stl(shape, os.path.splitext(os.path.basename(__file__))[0])

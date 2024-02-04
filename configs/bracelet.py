@@ -1,7 +1,8 @@
 import math
+import os
 
 from src.config import SpiralShapeConfig
-from src.mesh_utils import round_mesh_points, to_cylindrical_coords, from_cylindrical_coords, apply_transform
+from src.mesh_utils import round_mesh_points, to_cylindrical_coords, from_cylindrical_coords, apply_transform, save_stl
 from src.shape_spiral import generate_spiral_shape
 
 config = SpiralShapeConfig()
@@ -50,4 +51,4 @@ transform = warp_bracelet_transform
 shape = generate_spiral_shape(config)
 shape = apply_transform(shape, transform)
 shape = round_mesh_points(shape, 3)
-shape.save('bracelet.stl')
+save_stl(shape, os.path.splitext(os.path.basename(__file__))[0])

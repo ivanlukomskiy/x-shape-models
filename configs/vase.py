@@ -1,8 +1,9 @@
 import math
+import os
 
 from src.config import CircularShapeConfig
 from src.mesh_utils import snap_transform_to_layers, to_cylindrical_coords, \
-    from_cylindrical_coords, apply_transform, round_mesh_points
+    from_cylindrical_coords, apply_transform, round_mesh_points, save_stl
 from src.shape_circular import generate_cylindrical_shape
 
 config = CircularShapeConfig()
@@ -29,4 +30,4 @@ transform = warp_vase_transform
 transform = snap_transform_to_layers(config, transform)
 shape = apply_transform(shape, transform)
 shape = round_mesh_points(shape, 3)
-shape.save('vase.stl')
+save_stl(shape, os.path.splitext(os.path.basename(__file__))[0])

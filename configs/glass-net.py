@@ -1,5 +1,7 @@
+import os
+
 from src.config import CircularShapeConfig
-from src.mesh_utils import round_mesh_points
+from src.mesh_utils import round_mesh_points, save_stl
 from src.shape_circular import generate_cylindrical_shape
 
 config = CircularShapeConfig()
@@ -15,4 +17,4 @@ config.cell_fullness_function = lambda angle, h_fraction: 1 if h_fraction == 1 e
 
 shape = generate_cylindrical_shape(config)
 shape = round_mesh_points(shape, 3)
-shape.save('glass-net.stl')
+save_stl(shape, os.path.splitext(os.path.basename(__file__))[0])

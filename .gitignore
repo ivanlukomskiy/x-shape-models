@@ -1,4 +1,4 @@
 .idea
-venv
+.venv
 *.stl
 .DS_Store
