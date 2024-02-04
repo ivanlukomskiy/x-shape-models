@@ -11,6 +11,7 @@ class BaseConfig:
     contact_fraction_v = 0.3
     frame_len_top = 0
     frame_len_bottom = 0
+    x_shape_transform = None
 
     @property
     def height_without_frame(self):
@@ -40,6 +41,14 @@ class CircularShapeConfig(BaseConfig):
     @property
     def cell_center_angle(self):
         return 2 * math.pi / self.layer_cells_count
+
+    @property
+    def truncation_angle(self):
+        return self.cell_center_angle / 2
+
+    @property
+    def center_distance(self):
+        return self.radius * math.cos(self.truncation_angle)
 
 
 class GrooveConfig:

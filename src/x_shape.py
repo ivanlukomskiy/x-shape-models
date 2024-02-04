@@ -2,7 +2,7 @@ import math
 
 import numpy as np
 
-from src.mesh_utils import square, triangle, build_mesh, join_meshes
+from src.mesh_utils import square, triangle, build_mesh, join_meshes, apply_transform
 
 
 def create_x_shape(
@@ -21,6 +21,7 @@ def create_x_shape(
         right_cap=False,
         fullness=None,
         bottom=False,
+        transform=None,
 ):
     if fullness is None:
         fullness = [0, 0, 0, 0]
@@ -68,7 +69,11 @@ def create_x_shape(
                              b_cap=fullness[0] <= 0.5 or top_cap and fullness[0] > 0.5)
     mesh4.translate(np.array([0, 0, h]))
 
-    return join_meshes(mesh1, mesh2, mesh3, mesh4)
+    joint_meshes = join_meshes(mesh1, mesh2, mesh3, mesh4)
+    if transform is not None:
+        joint_meshes = apply_transform(joint_meshes, transform)
+
+    return joint_meshes
 
 
 def _x_shape_quarter(

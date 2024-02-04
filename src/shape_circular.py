@@ -47,7 +47,8 @@ def generate_cylindrical_shape(config: CircularShapeConfig):
                 fullness=fullness,
                 top_cap=cap_top,
                 bottom_cap=cap_bottom,
-                bottom=config.bottom
+                bottom=config.bottom,
+                transform=config.x_shape_transform,
             )
             x_shape.translate(np.array([0, center_distance, config.cell_height * layer + config.frame_len_bottom]))
             x_shape.rotate(np.array([0, 0, 1]), config.cell_center_angle * i)

@@ -65,7 +65,8 @@ def circular_shape(config):
                 fullness=fullness,
                 top_cap=cap_top,
                 bottom_cap=cap_bottom,
-                bottom=bottom
+                bottom=bottom,
+                transform=config.x_shape_transform,
             )
             brick.translate(np.array([0, center_distance, x_height * j]))
             brick.rotate(np.array([0, 0, 1]), angle_step * i)

@@ -97,6 +97,7 @@ def generate_spiral_shape(config: SpiralShapeConfig):
                 left_cap=i == 0,
                 right_cap=i == segments_count - 1,
                 fullness=fullness,
+                transform=config.x_shape_transform,
             )
             x_shape.rotate(np.array([0, 0, 1]), norm_angle)
             x_shape.translate(np.array([x_mid, y_mid, config.cell_height * layer * 1.]))
