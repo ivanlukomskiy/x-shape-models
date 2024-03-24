@@ -2,20 +2,20 @@ Experiments with generating models for 3D printing using Python with `numpy-stl`
 
 # basic idea
 
-All models use "X-shape" as a base building block:
+All models use "X-shape" as a base building block
 ![X Shape](img/x.png)
 
-X-shapes can be stacked to form a grid:
+X-shapes can be stacked to form a grid
 ![X Shape](img/3x2.png)
 
-If stacked at an angle, they might form cylindrical or spiral shapes:
+If stacked at an angle, they might form cylindrical or spiral shapes
 ![Cylindrical stack](img/toy.png)
 ![Spiral stack](img/roll-demo.png)
 
-Each cell might have its own "fullness":
+Each cell might have its own "fullness". Here fullness increases from the bottom to the top
 ![Variable fullness](img/variable-fullness.png)
 
-# How to use
+# how to use
 
 1. install python >=3.9
 2. install dependencies from requirements.txt
@@ -28,5 +28,13 @@ You can change any parameters in the config to adjust model.
 
 # models
 
-
-
+![Mosquito net roll](img/roll.png)
+![Glass with groove](img/glass_with_groove.png)
+![Glass](img/glass.png)
+![Vase1](img/vase1.png)
+![Vase2](img/vase2.png)
+![Vase3](img/vase3.png)
+![Vase4](img/vase4.png)
+![Vase5](img/vase5.png)
+![Lampshade](img/lampshade.png)
+![Plate](img/plate.png)

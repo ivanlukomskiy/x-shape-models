@@ -16,13 +16,7 @@ config.length = 60
 config.roll_layers_gap = 60
 
 def fullness(angle, h_fraction):
-    f = min(max(h_fraction*1.6 - 0.2, 0), 1)
-    print(f"{h_fraction} {f}")
-    if h_fraction < 0.2:
-        return 0
-    if h_fraction > 0.8:
-        return 1
-    return min(max(h_fraction*1.6 - 0.2, 0), 1)
+    return min(max(h_fraction*1.2 - 0.1, 0), 1)
 
 config.cell_fullness_function = fullness
 
