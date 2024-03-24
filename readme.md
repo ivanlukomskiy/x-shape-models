@@ -26,15 +26,26 @@ See the list of configs in the config folder
 You can change any parameters in the config to adjust model.
 
 
-# models
+# models showcase
 
+Mosquito net roll
 ![Mosquito net roll](img/roll.png)
+
+Glass with groove
 ![Glass with groove](img/glass_with_groove.png)
+
+Glass
 ![Glass](img/glass.png)
+
+Vases
 ![Vase1](img/vase1.png)
 ![Vase2](img/vase2.png)
 ![Vase3](img/vase3.png)
 ![Vase4](img/vase4.png)
 ![Vase5](img/vase5.png)
+
+Lampshade
 ![Lampshade](img/lampshade.png)
+
+Plate
 ![Plate](img/plate.png)
