@@ -5,14 +5,14 @@ from src.mesh_utils import round_mesh_points, save_stl
 from src.shape_spiral import generate_spiral_shape
 
 config = SpiralShapeConfig()
-config.radius = 100
-config.height = 160
+config.radius = 25
+config.height = 50
 config.thickness = 0.6
 config.base_cell_height = 6
 config.base_cell_width = 3.5
 config.frame_len_bottom = 3
 config.frame_len_top = 3
-config.length = 1100
+config.length = 200
 config.cell_fullness_function = lambda angle, h_fraction: 1 if h_fraction == 1 or h_fraction == 0 else 0
 
 shape = generate_spiral_shape(config)

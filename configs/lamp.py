@@ -14,7 +14,6 @@ config.base_cell_height = 12
 config.base_cell_width = 7
 config.frame_len_bottom = 6
 config.frame_len_top = 6
-config.bottom = True
 
 
 def fullness(angle, h_fraction):
