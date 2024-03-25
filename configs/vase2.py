@@ -7,14 +7,14 @@ from src.mesh_utils import snap_transform_to_layers, to_cylindrical_coords, \
 from src.shape_circular import generate_cylindrical_shape
 
 config = CircularShapeConfig()
-config.radius = 35
-config.height = 140
-config.thickness = 3
-config.base_cell_height = 28
-config.base_cell_width = 28
+config.radius = 60
+config.height = 193
+config.thickness = 18
+config.base_cell_height = 50
+config.base_cell_width = 40
 config.frame_len_bottom = 3
 config.bottom = True
-config.cell_fullness_function = lambda angle, h_fraction: 1
+config.cell_fullness_function = lambda angle, h_fraction: 0.1 if h_fraction == 1 else 0
 
 shape = generate_cylindrical_shape(config)
 
@@ -31,4 +31,3 @@ transform = snap_transform_to_layers(config, transform)
 shape = apply_transform(shape, transform)
 shape = round_mesh_points(shape, 3)
 save_stl(shape, os.path.splitext(os.path.basename(__file__))[0])
-

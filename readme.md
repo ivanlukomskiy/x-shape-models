@@ -1,4 +1,4 @@
-Experiments with generating models for 3D printing using Python with `numpy-stl`.
+Experiments with generating models for 3D printing using Python and `numpy-stl`.
 
 # basic idea
 
@@ -16,7 +16,6 @@ Each cell might have its own "fullness". Here fullness increases from the bottom
 ![Variable fullness](img/variable-fullness.png)
 
 Mathematical functions can be applied to the mesh points to stretch / scale / rotate parts of model.
-
 For example, here is a flat grid transformed into hyperbolic paraboloid.
 ![Hyperbolic paraboloid](img/hyperbolic_paraboloid.png)
 
@@ -36,25 +35,22 @@ You can change any parameters in the config to adjust model.
 Mosquito net that prints as a continuous roll up to several meters long
 ![Mosquito net roll](img/roll.png)
 
-Vase 0. This is a circular x-shapes pattern. Transform is added to move all 
+Vase 1. This is a circular x-shapes pattern. Transform is added to move all 
 points away from the main axis as height increases, so the vase expands towards the top.
-![Glass](img/vase0.png)
+![Vase 1](img/vase1.png)
 
-Vase 1. This is Vase 0 with an added transform that rotates all points as height increases.
-![Vase1](img/vase1.png)
+Vase 2. This is Vase 0 with an added transform that rotates all points as height increases.
+![Vase 2](img/vase2.png)
 
-Vase 2. This is Vase 1, but cells have 100% fullness.
-![Vase2](img/vase2.png)
-
-Vase 3 ----- remove ---------
-![Vase3](img/vase3.png)
+Vase 3. This is Vase 1, but cells have 100% fullness.
+![Vase 3](img/vase3.png)
 
 Vase 4. This is vase 2, but with higher density of x-shapes and added transform to stretch 
 the rim in a wave-like pattern.
-![Vase4](img/vase4.png)
+![Vase 4](img/vase4.png)
 
 Vase 5. Surface points moved away from the axis by the sin of height + angle.
-![Vase5](img/vase5.png)
+![Vase 5](img/vase5.png)
 
 Glass with groove. Groove is formed by several x-shape layers with 100% fullness.
 ![Glass with groove](img/glass_with_groove.png)
