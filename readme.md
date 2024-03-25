@@ -17,16 +17,8 @@ Each cell might have its own "fullness". Here fullness increases from the bottom
 
 Mathematical functions can be applied to the mesh points to stretch / scale / rotate parts of model.
 
-I also added an option to generate a bottom for cylindrical shapes ???
-
-// todo add example
-
-// quadric surfaces !!!
-// hyperboloid ?
-// paraboloid ?
-// ellipsoid ?
-// hyperbolic paraboloid ?
-// elliptic paraboloid ?
+For example, here is a flat grid transformed into hyperbolic paraboloid.
+![Hyperbolic paraboloid](img/hyperbolic_paraboloid.png)
 
 # how to use
 
@@ -73,3 +65,6 @@ the top so more light is reflected down.
 
 Plate for fruits. Fullness increases towards the bottom.
 ![Plate](img/plate.png)
+
+Hyperboloid of revolution.
+![Hyperboloid of revolution](img/hyperboloid.png)

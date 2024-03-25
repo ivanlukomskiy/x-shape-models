@@ -14,6 +14,8 @@ def generate_flat_shape(config: FlatShapeConfig):
         for i in range(config.layers_x_shapes_count):
             frame_top = layer == config.layers_count - 1
             frame_bottom = layer == 0
+            right_edge = i == config.layers_x_shapes_count - 1
+            left_edge = i == 0
             shape = create_x_shape(
                 config.cell_width,
                 config.thickness,
@@ -26,8 +28,9 @@ def generate_flat_shape(config: FlatShapeConfig):
                 frame_bottom=frame_bottom,
                 frame_len_top=config.frame_len_top,
                 frame_len_bottom=config.frame_len_bottom,
-                left_cap=i == 0,
-                right_cap=i == config.layers_x_shapes_count - 1,
+                left_cap=left_edge,
+                right_cap=right_edge,
+                fullness=[frame_top, left_edge, frame_bottom, right_edge],
             )
             shape.translate(np.array([i * config.cell_width, 0, layer * config.cell_height]))
             x_shapes.append(shape)
