@@ -1,3 +1,2 @@
 numpy==1.25.0
 numpy-stl==3.0.1
-pyyaml==6.0.1
