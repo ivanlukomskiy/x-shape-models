@@ -51,26 +51,18 @@ class CircularShapeConfig(BaseConfig):
         return self.radius * math.cos(self.truncation_angle)
 
 
-class GrooveConfig:
-    ring_height = 2
-    chamfer1_height = 2
-    chamfer2_height = 2
-    ring_delta_radius = 3
-    groove_delta_radius = -3
-    radius = 22
-    height = 20
-    thickness = 15
-    base_cell_width = 4
+class FlatShapeConfig(BaseConfig):
+    width = 100
 
     @property
-    def layer_segments_count(self):
-        return round(math.pi * 2 * self.radius / self.base_cell_width)
+    def layers_x_shapes_count(self):
+        return round(self.width / self.base_cell_width)
 
     @property
-    def segment_center_angle(self):
-        return 2 * math.pi / self.layer_segments_count
+    def cell_width(self):
+        return self.width / (round(self.width / self.base_cell_width))
 
-      
+
 class SpiralShapeConfig(BaseConfig):
     roll_layers_gap = 3
     length = 100
