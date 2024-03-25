@@ -32,14 +32,14 @@ You can change any parameters in the config to adjust model.
 
 # models showcase
 
-Mosquito net that prints as a continuous roll up to several meters long
+Mosquito net that prints as a continuous roll up to several meters long. [[printables](https://www.printables.com/model/820145-mosquito-net-roll-for-the-patient)]
 ![Mosquito net roll](img/roll.png)
 
 Vase 1. This is a circular x-shapes pattern. Transform is added to move all 
-points away from the main axis as height increases, so the vase expands towards the top.
+points away from the main axis as height increases, so the vase expands towards the top.  [[printables](https://www.printables.com/model/820157-geometric-vase)]
 ![Vase 1](img/vase1.png)
 
-Vase 2. This is Vase 0 with an added transform that rotates all points as height increases.
+Vase 2. This is Vase 0 with an added transform that rotates all points as height increases. [[printables](https://www.printables.com/model/820183-tornado-vase)]
 ![Vase 2](img/vase2.png)
 
 Vase 3. This is Vase 1, but cells have 100% fullness.
@@ -49,14 +49,14 @@ Vase 4. This is vase 2, but with higher density of x-shapes and added transform 
 the rim in a wave-like pattern.
 ![Vase 4](img/vase4.png)
 
-Vase 5. Surface points moved away from the axis by the sin of height + angle.
+Vase 5. Surface points moved away from the axis by the sin of height + angle. [[printables](https://www.printables.com/model/820184-cone-shaped-vase)]
 ![Vase 5](img/vase5.png)
 
-Glass with groove. Groove is formed by several x-shape layers with 100% fullness.
+Glass with groove. Groove is formed by several x-shape layers with 100% fullness. [[printables](https://www.printables.com/model/820187-geometric-glass-with-a-groove)]
 ![Glass with groove](img/glass_with_groove.png)
 
 Lampshade. It's a circular x-shapes pattern warped into a round shape. Fullness increases towards
-the top so more light is reflected down.
+the top so more light is reflected down. [[printables](https://www.printables.com/model/820152-lampshade)]
 ![Lampshade](img/lampshade.png)
 
 Plate for fruits. Fullness increases towards the bottom.
