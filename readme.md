@@ -39,13 +39,13 @@ Vase 1. This is a circular x-shapes pattern. Transform is added to move all
 points away from the main axis as height increases, so the vase expands towards the top.  [[printables](https://www.printables.com/model/820157-geometric-vase)]
 ![Vase 1](img/vase1.png)
 
-Vase 2. This is Vase 0 with an added transform that rotates all points as height increases. [[printables](https://www.printables.com/model/820183-tornado-vase)]
+Vase 2. This is Vase 1 with an added transform that rotates all points as height increases. [[printables](https://www.printables.com/model/820183-tornado-vase)]
 ![Vase 2](img/vase2.png)
 
-Vase 3. This is Vase 1, but cells have 100% fullness.
+Vase 3. This is Vase 2, but cells have 100% fullness.
 ![Vase 3](img/vase3.png)
 
-Vase 4. This is vase 2, but with higher density of x-shapes and added transform to stretch 
+Vase 4. This is vase 3, but with higher density of x-shapes and added transform to stretch 
 the rim in a wave-like pattern.
 ![Vase 4](img/vase4.png)
 
