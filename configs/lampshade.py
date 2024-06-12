@@ -24,9 +24,20 @@ config.cell_fullness_function = fullness
 
 shape = generate_cylindrical_shape(config)
 
+expand_start = 0.8
+expand_weight = .006
 
 def warp_lamp_transform(x, y, z):
     angle, distance, z = to_cylindrical_coords(x, y, z)
+
+    # make top layers a bit thicker
+    expand = 0 if z / config.height < expand_start else (z / config.height - expand_start) / (1 - expand_start)
+    if expand > 0:
+        if distance / config.radius > 1:
+            distance = distance * (1 + expand * expand_weight)
+        elif distance / config.radius < 1:
+            distance = distance * (1 - expand * expand_weight)
+
     scale = 1 - 2.2 * math.pow(max(abs((z - config.frame_len_bottom) / config.height_without_frame - 0.35), 0), 3) + 0.3
     return from_cylindrical_coords(angle, distance * scale, z)
 
